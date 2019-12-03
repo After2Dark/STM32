@@ -92,20 +92,28 @@ int sin_value[90] =
 	21852399,
 	9731931,
 	243595
-}, i = 0;
+}, i = 0, adc_value = 0, psc = 1874414;
 
 void TIM4_IRQHandler(void)
 {
-	TIM4->CCR3 = sin_value[i]/2000000;
-	i++;
-	if(i == 90)
+	TIM4->CCR3 = sin_value[i]/psc;
+	++i;
+	if(i == 89)
 		i = 0;
 	TIM4->SR &= ~TIM_SR_UIF;
 }
 
+int a = 0;
+
 void SysTick_Handler(void)
 {
-	ADC1->CR2 |= ADC_CR2_JSWSTART;
+	/*for(int i = 0; i < 5; ++i)
+	{
+		ADC1->CR2 |= ADC_CR2_JSWSTART;
+		adc_value += ADC1->JDR1;
+	}
+	TIM4->ARR = 1067 + adc_value/48;
+	adc_value = 0;*/
 }
 
 void init_all()
@@ -131,7 +139,7 @@ void init_all()
 	GPIOB->AFR[1] |= GPIO_AFRH_AFRH0_1;
 	TIM4->PSC = 0;
 	TIM4->ARR = 1067;
-	TIM4->CCR3 = 500;
+	TIM4->CCR3 = 533;
 	TIM4->CCMR2 |= TIM_CCMR2_OC3M_1 | TIM_CCMR2_OC3M_2;
 	TIM4->CCER |= TIM_CCER_CC3E;
 	TIM4->DIER |= TIM_DIER_UIE;
@@ -141,6 +149,8 @@ void init_all()
 	GPIOA->MODER |= GPIO_MODER_MODER3;
 	ADC1->JSQR |= ADC_JSQR_JSQ4_0 | ADC_JSQR_JSQ4_1;
 	ADC1->CR2 |= ADC_CR2_ADON | ADC_CR2_JSWSTART;
+
+	GPIOB->MODER |= GPIO_MODER_MODER7_0;
 }
 
 int main(void)
