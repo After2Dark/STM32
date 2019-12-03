@@ -92,7 +92,7 @@ int sin_value[90] =
 	21852399,
 	9731931,
 	243595
-}, i = 0, adc_value = 0, psc = 1874414;
+}, i = 0, adc_value = 0, psc = 2000000000/133;
 
 void TIM4_IRQHandler(void)
 {
@@ -105,19 +105,20 @@ void TIM4_IRQHandler(void)
 
 void SysTick_Handler(void)
 {
-	/*for(int i = 0; i < 5; ++i)
+	for(int i = 0; i < 5; ++i)
 	{
 		ADC1->CR2 |= ADC_CR2_JSWSTART;
 		adc_value += ADC1->JDR1;
 	}
-	TIM4->ARR = 1067 + adc_value/48;
-	adc_value = 0;*/
+	TIM4->ARR = 133 + adc_value/102;
+	psc = 2000000000/(133 + adc_value/102);
+	adc_value = 0;
 }
 
 void init_all()
 {
 	RCC->PLLCFGR |= RCC_PLLCFGR_PLLM_4 | RCC_PLLCFGR_PLLN_7 | RCC_PLLCFGR_PLLN_6 | RCC_PLLCFGR_PLLSRC;
-	RCC->CFGR |= RCC_CFGR_PPRE1_2 | RCC_CFGR_PPRE1_1;
+	RCC->CFGR |= RCC_CFGR_PPRE1 | RCC_CFGR_HPRE_0 | RCC_CFGR_HPRE_3;
 	FLASH->ACR |= FLASH_ACR_LATENCY_3WS;
 	RCC->CR |= RCC_CR_HSEON;
 	while((RCC->CR & RCC_CR_HSERDY) == 0);
@@ -135,9 +136,7 @@ void init_all()
 
 	GPIOB->MODER |= GPIO_MODER_MODER8_1;
 	GPIOB->AFR[1] |= GPIO_AFRH_AFRH0_1;
-	TIM4->PSC = 0;
-	TIM4->ARR = 1067;
-	TIM4->CCR3 = 533;
+	TIM4->ARR = 133;
 	TIM4->CCMR2 |= TIM_CCMR2_OC3M_1 | TIM_CCMR2_OC3M_2;
 	TIM4->CCER |= TIM_CCER_CC3E;
 	TIM4->DIER |= TIM_DIER_UIE;
