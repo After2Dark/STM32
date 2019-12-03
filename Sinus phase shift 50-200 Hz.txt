@@ -103,8 +103,6 @@ void TIM4_IRQHandler(void)
 	TIM4->SR &= ~TIM_SR_UIF;
 }
 
-int a = 0;
-
 void SysTick_Handler(void)
 {
 	/*for(int i = 0; i < 5; ++i)
