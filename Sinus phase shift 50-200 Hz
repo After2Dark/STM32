@@ -1,6 +1,6 @@
 #include "stm32f767xx.h"
 
-int sin_value[91] = 
+int sin_value[90] =
 {
 	0,
 	243595,
@@ -91,44 +91,61 @@ int sin_value[91] =
 	38738304,
 	21852399,
 	9731931,
-	243595,
-	0
-},
-i = 0, dir = 0;
+	243595
+}, i = 0, adc_value = 0, psc = 2000000000/133;
+
+void TIM4_IRQHandler(void)
+{
+	TIM4->CCR3 = sin_value[i]/psc;
+	++i;
+	if(i == 89)
+		i = 0;
+	TIM4->SR &= ~TIM_SR_UIF;
+}
+
+void SysTick_Handler(void)
+{
+	for(int i = 0; i < 5; ++i)
+	{
+		ADC1->CR2 |= ADC_CR2_JSWSTART;
+		adc_value += ADC1->JDR1;
+	}
+	TIM4->ARR = 133 + adc_value/102;
+	psc = 2000000000/(133 + adc_value/102);
+	adc_value = 0;
+}
 
 void init_all()
 {
-	RCC->APB1ENR |= RCC_APB1ENR_TIM4EN;
+	RCC->PLLCFGR |= RCC_PLLCFGR_PLLM_4 | RCC_PLLCFGR_PLLN_7 | RCC_PLLCFGR_PLLN_6 | RCC_PLLCFGR_PLLSRC;
+	RCC->CFGR |= RCC_CFGR_PPRE1 | RCC_CFGR_HPRE_0 | RCC_CFGR_HPRE_3;
+	FLASH->ACR |= FLASH_ACR_LATENCY_3WS;
+	RCC->CR |= RCC_CR_HSEON;
+	while((RCC->CR & RCC_CR_HSERDY) == 0);
+	RCC->CR |= RCC_CR_PLLON;
+	while((RCC->CR & RCC_CR_PLLRDY) == 0);
+	RCC->CFGR |= RCC_CFGR_SW_1;
+	while((RCC->CFGR & RCC_CFGR_SWS_Msk) != RCC_CFGR_SWS_1);
+	RCC->CR &= ~RCC_CR_HSION;
+
 	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN | RCC_AHB1ENR_GPIOBEN;
+	RCC->APB1ENR |= RCC_APB1ENR_TIM4EN;
 	RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN | RCC_APB2ENR_ADC1EN;
 
-	GPIOB->MODER |= GPIO_MODER_MODER8_1 | GPIO_MODER_MODER9_1;
-	GPIOB->AFR[1] |= GPIO_AFRH_AFRH0_1 | GPIO_AFRH_AFRH1_1;
-	TIM4->PSC = 16;
-	TIM4->ARR = 200;
-	TIM4->CCR3 = 0;
-	TIM4->CCR4 = 0;
-	TIM4->CCMR2 |= TIM_CCMR2_OC3M_1 | TIM_CCMR2_OC3M_2 | TIM_CCMR2_OC4M_1 | TIM_CCMR2_OC4M_2;
-	TIM4->CCER |= TIM_CCER_CC3E | TIM_CCER_CC4E;
-	TIM4->CR1 |= TIM_CR1_CEN;
+	SysTick_Config(1200000);
 
-	GPIOA->MODER |= GPIO_MODER_MODER3;
-	ADC1->JSQR |= ADC_JSQR_JSQ4_0 | ADC_JSQR_JSQ4_1;
-	ADC1->CR2 |= ADC_CR2_ADON | ADC_CR2_JSWSTART;
+	GPIOB->MODER |= GPIO_MODER_MODER8_1;
+	GPIOB->AFR[1] |= GPIO_AFRH_AFRH0_1;
+	TIM4->ARR = 133;
+	TIM4->CCMR2 |= TIM_CCMR2_OC3M_1 | TIM_CCMR2_OC3M_2;
+	TIM4->CCER |= TIM_CCER_CC3E;
+	TIM4->DIER |= TIM_DIER_UIE;
+	NVIC_EnableIRQ(TIM4_IRQn);
+
 }
 
 int main(void)
 {
 	init_all();
-	while(1)
-	{
-		TIM4->CCR3 = sin_value[i]/10000000;
-		TIM4->CCR4 = sin_value[i+30]/10000000;
-		if(i == 90)
-			i = 0;
-		i++;
-		ADC1->CR2 |= ADC_CR2_JSWSTART;
-		for(int i = 0; i <= 25 + ADC1->JDR1/41; i++);
-	}
+	while(1);
 }
-
