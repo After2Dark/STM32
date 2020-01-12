@@ -1,0 +1,1357 @@
+
+7th-segment_ind.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .isr_vector   000001f8  08000000  08000000  00010000  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  1 .text         000009d0  080001f8  080001f8  000101f8  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .rodata       00000000  08000bc8  08000bd0  00010bd0  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  3 .ARM.extab    00000000  08000bc8  08000bc8  00010bd0  2**0
+                  CONTENTS
+  4 .ARM          00000000  08000bc8  08000bc8  00010bd0  2**0
+                  CONTENTS
+  5 .preinit_array 00000000  08000bc8  08000bd0  00010bd0  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  6 .init_array   00000004  08000bc8  08000bc8  00010bc8  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  7 .fini_array   00000004  08000bcc  08000bcc  00010bcc  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  8 .data         00000000  20000000  20000000  00010bd0  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  9 .bss          0000001c  20000000  08000bd0  00020000  2**2
+                  ALLOC
+ 10 ._user_heap_stack 00000604  2000001c  08000bd0  0002001c  2**0
+                  ALLOC
+ 11 .ARM.attributes 0000002e  00000000  00000000  00010bd0  2**0
+                  CONTENTS, READONLY
+ 12 .debug_info   000004ac  00000000  00000000  00010bfe  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 13 .debug_abbrev 00000173  00000000  00000000  000110aa  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 14 .debug_aranges 00000088  00000000  00000000  00011220  2**3
+                  CONTENTS, READONLY, DEBUGGING
+ 15 .debug_ranges 00000060  00000000  00000000  000112a8  2**3
+                  CONTENTS, READONLY, DEBUGGING
+ 16 .debug_macro  0001c503  00000000  00000000  00011308  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 17 .debug_line   000006cc  00000000  00000000  0002d80b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 18 .debug_str    0009f4ef  00000000  00000000  0002ded7  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 19 .comment      0000007b  00000000  00000000  000cd3c6  2**0
+                  CONTENTS, READONLY
+ 20 .debug_frame  00000120  00000000  00000000  000cd444  2**2
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+080001f8 <__do_global_dtors_aux>:
+ 80001f8:	b510      	push	{r4, lr}
+ 80001fa:	4c05      	ldr	r4, [pc, #20]	; (8000210 <__do_global_dtors_aux+0x18>)
+ 80001fc:	7823      	ldrb	r3, [r4, #0]
+ 80001fe:	b933      	cbnz	r3, 800020e <__do_global_dtors_aux+0x16>
+ 8000200:	4b04      	ldr	r3, [pc, #16]	; (8000214 <__do_global_dtors_aux+0x1c>)
+ 8000202:	b113      	cbz	r3, 800020a <__do_global_dtors_aux+0x12>
+ 8000204:	4804      	ldr	r0, [pc, #16]	; (8000218 <__do_global_dtors_aux+0x20>)
+ 8000206:	f3af 8000 	nop.w
+ 800020a:	2301      	movs	r3, #1
+ 800020c:	7023      	strb	r3, [r4, #0]
+ 800020e:	bd10      	pop	{r4, pc}
+ 8000210:	20000000 	.word	0x20000000
+ 8000214:	00000000 	.word	0x00000000
+ 8000218:	08000bb0 	.word	0x08000bb0
+
+0800021c <frame_dummy>:
+ 800021c:	b508      	push	{r3, lr}
+ 800021e:	4b03      	ldr	r3, [pc, #12]	; (800022c <frame_dummy+0x10>)
+ 8000220:	b11b      	cbz	r3, 800022a <frame_dummy+0xe>
+ 8000222:	4903      	ldr	r1, [pc, #12]	; (8000230 <frame_dummy+0x14>)
+ 8000224:	4803      	ldr	r0, [pc, #12]	; (8000234 <frame_dummy+0x18>)
+ 8000226:	f3af 8000 	nop.w
+ 800022a:	bd08      	pop	{r3, pc}
+ 800022c:	00000000 	.word	0x00000000
+ 8000230:	20000004 	.word	0x20000004
+ 8000234:	08000bb0 	.word	0x08000bb0
+
+08000238 <init_all>:
+	value = -value;
+	return value;
+}
+
+void init_all()
+{
+ 8000238:	b480      	push	{r7}
+ 800023a:	af00      	add	r7, sp, #0
+	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN | RCC_AHB1ENR_GPIODEN | RCC_AHB1ENR_GPIOGEN;
+ 800023c:	4b17      	ldr	r3, [pc, #92]	; (800029c <init_all+0x64>)
+ 800023e:	6b1b      	ldr	r3, [r3, #48]	; 0x30
+ 8000240:	4a16      	ldr	r2, [pc, #88]	; (800029c <init_all+0x64>)
+ 8000242:	f043 034c 	orr.w	r3, r3, #76	; 0x4c
+ 8000246:	6313      	str	r3, [r2, #48]	; 0x30
+	GPIOC->MODER |= GPIO_MODER_MODER8_0 | GPIO_MODER_MODER9_0 | GPIO_MODER_MODER10_0 | GPIO_MODER_MODER11_0 | GPIO_MODER_MODER12_0;
+ 8000248:	4b15      	ldr	r3, [pc, #84]	; (80002a0 <init_all+0x68>)
+ 800024a:	681a      	ldr	r2, [r3, #0]
+ 800024c:	4914      	ldr	r1, [pc, #80]	; (80002a0 <init_all+0x68>)
+ 800024e:	4b15      	ldr	r3, [pc, #84]	; (80002a4 <init_all+0x6c>)
+ 8000250:	4313      	orrs	r3, r2
+ 8000252:	600b      	str	r3, [r1, #0]
+	GPIOC->OTYPER |= GPIO_OTYPER_OT_8 | GPIO_OTYPER_OT_9 | GPIO_OTYPER_OT_10 | GPIO_OTYPER_OT_11 | GPIO_OTYPER_OT_12;
+ 8000254:	4b12      	ldr	r3, [pc, #72]	; (80002a0 <init_all+0x68>)
+ 8000256:	685b      	ldr	r3, [r3, #4]
+ 8000258:	4a11      	ldr	r2, [pc, #68]	; (80002a0 <init_all+0x68>)
+ 800025a:	f443 53f8 	orr.w	r3, r3, #7936	; 0x1f00
+ 800025e:	6053      	str	r3, [r2, #4]
+	GPIOD->MODER |= GPIO_MODER_MODER2_0 | GPIO_MODER_MODER4_0 | GPIO_MODER_MODER5_0 | GPIO_MODER_MODER6_0 | GPIO_MODER_MODER7_0;
+ 8000260:	4b11      	ldr	r3, [pc, #68]	; (80002a8 <init_all+0x70>)
+ 8000262:	681a      	ldr	r2, [r3, #0]
+ 8000264:	4910      	ldr	r1, [pc, #64]	; (80002a8 <init_all+0x70>)
+ 8000266:	f245 5310 	movw	r3, #21776	; 0x5510
+ 800026a:	4313      	orrs	r3, r2
+ 800026c:	600b      	str	r3, [r1, #0]
+	GPIOD->OTYPER |= GPIO_OTYPER_OT_2 | GPIO_OTYPER_OT_4 | GPIO_OTYPER_OT_5 | GPIO_OTYPER_OT_6 | GPIO_OTYPER_OT_7;
+ 800026e:	4b0e      	ldr	r3, [pc, #56]	; (80002a8 <init_all+0x70>)
+ 8000270:	685b      	ldr	r3, [r3, #4]
+ 8000272:	4a0d      	ldr	r2, [pc, #52]	; (80002a8 <init_all+0x70>)
+ 8000274:	f043 03f4 	orr.w	r3, r3, #244	; 0xf4
+ 8000278:	6053      	str	r3, [r2, #4]
+	GPIOG->MODER |= GPIO_MODER_MODER2_0 | GPIO_MODER_MODER3_0;
+ 800027a:	4b0c      	ldr	r3, [pc, #48]	; (80002ac <init_all+0x74>)
+ 800027c:	681b      	ldr	r3, [r3, #0]
+ 800027e:	4a0b      	ldr	r2, [pc, #44]	; (80002ac <init_all+0x74>)
+ 8000280:	f043 0350 	orr.w	r3, r3, #80	; 0x50
+ 8000284:	6013      	str	r3, [r2, #0]
+	GPIOG->OTYPER |= GPIO_OTYPER_OT_2 | GPIO_OTYPER_OT_3;
+ 8000286:	4b09      	ldr	r3, [pc, #36]	; (80002ac <init_all+0x74>)
+ 8000288:	685b      	ldr	r3, [r3, #4]
+ 800028a:	4a08      	ldr	r2, [pc, #32]	; (80002ac <init_all+0x74>)
+ 800028c:	f043 030c 	orr.w	r3, r3, #12
+ 8000290:	6053      	str	r3, [r2, #4]
+}
+ 8000292:	bf00      	nop
+ 8000294:	46bd      	mov	sp, r7
+ 8000296:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 800029a:	4770      	bx	lr
+ 800029c:	40023800 	.word	0x40023800
+ 80002a0:	40020800 	.word	0x40020800
+ 80002a4:	01550000 	.word	0x01550000
+ 80002a8:	40020c00 	.word	0x40020c00
+ 80002ac:	40021800 	.word	0x40021800
+
+080002b0 <clear_display>:
+
+void clear_display()
+{
+ 80002b0:	b480      	push	{r7}
+ 80002b2:	af00      	add	r7, sp, #0
+	GPIOC->BSRR |= GPIO_BSRR_BS_8 | GPIO_BSRR_BS_9 | GPIO_BSRR_BS_10 | GPIO_BSRR_BS_11 | GPIO_BSRR_BS_12;
+ 80002b4:	4b0b      	ldr	r3, [pc, #44]	; (80002e4 <clear_display+0x34>)
+ 80002b6:	699b      	ldr	r3, [r3, #24]
+ 80002b8:	4a0a      	ldr	r2, [pc, #40]	; (80002e4 <clear_display+0x34>)
+ 80002ba:	f443 53f8 	orr.w	r3, r3, #7936	; 0x1f00
+ 80002be:	6193      	str	r3, [r2, #24]
+	GPIOD->BSRR |= GPIO_BSRR_BS_2 | GPIO_BSRR_BS_4 | GPIO_BSRR_BS_5 | GPIO_BSRR_BS_6 | GPIO_BSRR_BS_7;
+ 80002c0:	4b09      	ldr	r3, [pc, #36]	; (80002e8 <clear_display+0x38>)
+ 80002c2:	699b      	ldr	r3, [r3, #24]
+ 80002c4:	4a08      	ldr	r2, [pc, #32]	; (80002e8 <clear_display+0x38>)
+ 80002c6:	f043 03f4 	orr.w	r3, r3, #244	; 0xf4
+ 80002ca:	6193      	str	r3, [r2, #24]
+	GPIOG->BSRR |= GPIO_BSRR_BS_2 | GPIO_BSRR_BS_3;
+ 80002cc:	4b07      	ldr	r3, [pc, #28]	; (80002ec <clear_display+0x3c>)
+ 80002ce:	699b      	ldr	r3, [r3, #24]
+ 80002d0:	4a06      	ldr	r2, [pc, #24]	; (80002ec <clear_display+0x3c>)
+ 80002d2:	f043 030c 	orr.w	r3, r3, #12
+ 80002d6:	6193      	str	r3, [r2, #24]
+}
+ 80002d8:	bf00      	nop
+ 80002da:	46bd      	mov	sp, r7
+ 80002dc:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 80002e0:	4770      	bx	lr
+ 80002e2:	bf00      	nop
+ 80002e4:	40020800 	.word	0x40020800
+ 80002e8:	40020c00 	.word	0x40020c00
+ 80002ec:	40021800 	.word	0x40021800
+
+080002f0 <display_numeric>:
+
+void display_numeric(int numeric)
+{
+ 80002f0:	b580      	push	{r7, lr}
+ 80002f2:	b084      	sub	sp, #16
+ 80002f4:	af00      	add	r7, sp, #0
+ 80002f6:	6078      	str	r0, [r7, #4]
+	if(numeric < 10 && numeric >= 0)
+ 80002f8:	687b      	ldr	r3, [r7, #4]
+ 80002fa:	2b09      	cmp	r3, #9
+ 80002fc:	f300 80d3 	bgt.w	80004a6 <display_numeric+0x1b6>
+ 8000300:	687b      	ldr	r3, [r7, #4]
+ 8000302:	2b00      	cmp	r3, #0
+ 8000304:	f2c0 80cf 	blt.w	80004a6 <display_numeric+0x1b6>
+	{
+		switch(numeric)
+ 8000308:	687b      	ldr	r3, [r7, #4]
+ 800030a:	2b09      	cmp	r3, #9
+ 800030c:	f200 8138 	bhi.w	8000580 <display_numeric+0x290>
+ 8000310:	a201      	add	r2, pc, #4	; (adr r2, 8000318 <display_numeric+0x28>)
+ 8000312:	f852 f023 	ldr.w	pc, [r2, r3, lsl #2]
+ 8000316:	bf00      	nop
+ 8000318:	08000341 	.word	0x08000341
+ 800031c:	08000367 	.word	0x08000367
+ 8000320:	08000381 	.word	0x08000381
+ 8000324:	080003a7 	.word	0x080003a7
+ 8000328:	080003cd 	.word	0x080003cd
+ 800032c:	080003e7 	.word	0x080003e7
+ 8000330:	0800040d 	.word	0x0800040d
+ 8000334:	08000433 	.word	0x08000433
+ 8000338:	08000459 	.word	0x08000459
+ 800033c:	0800047f 	.word	0x0800047f
+		{
+			case 0:
+			{
+				GPIOC->BSRR |= GPIO_BSRR_BR_12;
+ 8000340:	4b92      	ldr	r3, [pc, #584]	; (800058c <display_numeric+0x29c>)
+ 8000342:	699b      	ldr	r3, [r3, #24]
+ 8000344:	4a91      	ldr	r2, [pc, #580]	; (800058c <display_numeric+0x29c>)
+ 8000346:	f043 5380 	orr.w	r3, r3, #268435456	; 0x10000000
+ 800034a:	6193      	str	r3, [r2, #24]
+				GPIOD->BSRR |= GPIO_BSRR_BR_2 | GPIO_BSRR_BR_6 | GPIO_BSRR_BR_7;
+ 800034c:	4b90      	ldr	r3, [pc, #576]	; (8000590 <display_numeric+0x2a0>)
+ 800034e:	699b      	ldr	r3, [r3, #24]
+ 8000350:	4a8f      	ldr	r2, [pc, #572]	; (8000590 <display_numeric+0x2a0>)
+ 8000352:	f443 0344 	orr.w	r3, r3, #12845056	; 0xc40000
+ 8000356:	6193      	str	r3, [r2, #24]
+				GPIOG->BSRR |= GPIO_BSRR_BR_2 | GPIO_BSRR_BR_3;
+ 8000358:	4b8e      	ldr	r3, [pc, #568]	; (8000594 <display_numeric+0x2a4>)
+ 800035a:	699b      	ldr	r3, [r3, #24]
+ 800035c:	4a8d      	ldr	r2, [pc, #564]	; (8000594 <display_numeric+0x2a4>)
+ 800035e:	f443 2340 	orr.w	r3, r3, #786432	; 0xc0000
+ 8000362:	6193      	str	r3, [r2, #24]
+				break;
+ 8000364:	e09e      	b.n	80004a4 <display_numeric+0x1b4>
+			}
+			case 1:
+			{
+				GPIOD->BSRR |= GPIO_BSRR_BR_2;
+ 8000366:	4b8a      	ldr	r3, [pc, #552]	; (8000590 <display_numeric+0x2a0>)
+ 8000368:	699b      	ldr	r3, [r3, #24]
+ 800036a:	4a89      	ldr	r2, [pc, #548]	; (8000590 <display_numeric+0x2a0>)
+ 800036c:	f443 2380 	orr.w	r3, r3, #262144	; 0x40000
+ 8000370:	6193      	str	r3, [r2, #24]
+				GPIOG->BSRR |= GPIO_BSRR_BR_2;
+ 8000372:	4b88      	ldr	r3, [pc, #544]	; (8000594 <display_numeric+0x2a4>)
+ 8000374:	699b      	ldr	r3, [r3, #24]
+ 8000376:	4a87      	ldr	r2, [pc, #540]	; (8000594 <display_numeric+0x2a4>)
+ 8000378:	f443 2380 	orr.w	r3, r3, #262144	; 0x40000
+ 800037c:	6193      	str	r3, [r2, #24]
+				break;
+ 800037e:	e091      	b.n	80004a4 <display_numeric+0x1b4>
+			}
+			case 2:
+			{
+				GPIOC->BSRR |= GPIO_BSRR_BR_12;
+ 8000380:	4b82      	ldr	r3, [pc, #520]	; (800058c <display_numeric+0x29c>)
+ 8000382:	699b      	ldr	r3, [r3, #24]
+ 8000384:	4a81      	ldr	r2, [pc, #516]	; (800058c <display_numeric+0x29c>)
+ 8000386:	f043 5380 	orr.w	r3, r3, #268435456	; 0x10000000
+ 800038a:	6193      	str	r3, [r2, #24]
+				GPIOD->BSRR |= GPIO_BSRR_BR_2 | GPIO_BSRR_BR_5 | GPIO_BSRR_BR_7;
+ 800038c:	4b80      	ldr	r3, [pc, #512]	; (8000590 <display_numeric+0x2a0>)
+ 800038e:	699b      	ldr	r3, [r3, #24]
+ 8000390:	4a7f      	ldr	r2, [pc, #508]	; (8000590 <display_numeric+0x2a0>)
+ 8000392:	f443 0324 	orr.w	r3, r3, #10747904	; 0xa40000
+ 8000396:	6193      	str	r3, [r2, #24]
+				GPIOG->BSRR |= GPIO_BSRR_BR_3;
+ 8000398:	4b7e      	ldr	r3, [pc, #504]	; (8000594 <display_numeric+0x2a4>)
+ 800039a:	699b      	ldr	r3, [r3, #24]
+ 800039c:	4a7d      	ldr	r2, [pc, #500]	; (8000594 <display_numeric+0x2a4>)
+ 800039e:	f443 2300 	orr.w	r3, r3, #524288	; 0x80000
+ 80003a2:	6193      	str	r3, [r2, #24]
+				break;
+ 80003a4:	e07e      	b.n	80004a4 <display_numeric+0x1b4>
+			}
+			case 3:
+			{
+				GPIOC->BSRR |= GPIO_BSRR_BR_12;
+ 80003a6:	4b79      	ldr	r3, [pc, #484]	; (800058c <display_numeric+0x29c>)
+ 80003a8:	699b      	ldr	r3, [r3, #24]
+ 80003aa:	4a78      	ldr	r2, [pc, #480]	; (800058c <display_numeric+0x29c>)
+ 80003ac:	f043 5380 	orr.w	r3, r3, #268435456	; 0x10000000
+ 80003b0:	6193      	str	r3, [r2, #24]
+				GPIOD->BSRR |= GPIO_BSRR_BR_2 | GPIO_BSRR_BR_5;
+ 80003b2:	4b77      	ldr	r3, [pc, #476]	; (8000590 <display_numeric+0x2a0>)
+ 80003b4:	699b      	ldr	r3, [r3, #24]
+ 80003b6:	4a76      	ldr	r2, [pc, #472]	; (8000590 <display_numeric+0x2a0>)
+ 80003b8:	f443 1310 	orr.w	r3, r3, #2359296	; 0x240000
+ 80003bc:	6193      	str	r3, [r2, #24]
+				GPIOG->BSRR |= GPIO_BSRR_BR_2 | GPIO_BSRR_BR_3;
+ 80003be:	4b75      	ldr	r3, [pc, #468]	; (8000594 <display_numeric+0x2a4>)
+ 80003c0:	699b      	ldr	r3, [r3, #24]
+ 80003c2:	4a74      	ldr	r2, [pc, #464]	; (8000594 <display_numeric+0x2a4>)
+ 80003c4:	f443 2340 	orr.w	r3, r3, #786432	; 0xc0000
+ 80003c8:	6193      	str	r3, [r2, #24]
+				break;
+ 80003ca:	e06b      	b.n	80004a4 <display_numeric+0x1b4>
+			}
+			case 4:
+			{
+				GPIOD->BSRR |= GPIO_BSRR_BR_2 | GPIO_BSRR_BR_5 | GPIO_BSRR_BR_6;
+ 80003cc:	4b70      	ldr	r3, [pc, #448]	; (8000590 <display_numeric+0x2a0>)
+ 80003ce:	699b      	ldr	r3, [r3, #24]
+ 80003d0:	4a6f      	ldr	r2, [pc, #444]	; (8000590 <display_numeric+0x2a0>)
+ 80003d2:	f443 03c8 	orr.w	r3, r3, #6553600	; 0x640000
+ 80003d6:	6193      	str	r3, [r2, #24]
+				GPIOG->BSRR |= GPIO_BSRR_BR_2;
+ 80003d8:	4b6e      	ldr	r3, [pc, #440]	; (8000594 <display_numeric+0x2a4>)
+ 80003da:	699b      	ldr	r3, [r3, #24]
+ 80003dc:	4a6d      	ldr	r2, [pc, #436]	; (8000594 <display_numeric+0x2a4>)
+ 80003de:	f443 2380 	orr.w	r3, r3, #262144	; 0x40000
+ 80003e2:	6193      	str	r3, [r2, #24]
+				break;
+ 80003e4:	e05e      	b.n	80004a4 <display_numeric+0x1b4>
+			}
+			case 5:
+			{
+				GPIOC->BSRR |= GPIO_BSRR_BR_12;
+ 80003e6:	4b69      	ldr	r3, [pc, #420]	; (800058c <display_numeric+0x29c>)
+ 80003e8:	699b      	ldr	r3, [r3, #24]
+ 80003ea:	4a68      	ldr	r2, [pc, #416]	; (800058c <display_numeric+0x29c>)
+ 80003ec:	f043 5380 	orr.w	r3, r3, #268435456	; 0x10000000
+ 80003f0:	6193      	str	r3, [r2, #24]
+				GPIOD->BSRR |= GPIO_BSRR_BR_5 | GPIO_BSRR_BR_6;
+ 80003f2:	4b67      	ldr	r3, [pc, #412]	; (8000590 <display_numeric+0x2a0>)
+ 80003f4:	699b      	ldr	r3, [r3, #24]
+ 80003f6:	4a66      	ldr	r2, [pc, #408]	; (8000590 <display_numeric+0x2a0>)
+ 80003f8:	f443 03c0 	orr.w	r3, r3, #6291456	; 0x600000
+ 80003fc:	6193      	str	r3, [r2, #24]
+				GPIOG->BSRR |= GPIO_BSRR_BR_2 | GPIO_BSRR_BR_3;
+ 80003fe:	4b65      	ldr	r3, [pc, #404]	; (8000594 <display_numeric+0x2a4>)
+ 8000400:	699b      	ldr	r3, [r3, #24]
+ 8000402:	4a64      	ldr	r2, [pc, #400]	; (8000594 <display_numeric+0x2a4>)
+ 8000404:	f443 2340 	orr.w	r3, r3, #786432	; 0xc0000
+ 8000408:	6193      	str	r3, [r2, #24]
+				break;
+ 800040a:	e04b      	b.n	80004a4 <display_numeric+0x1b4>
+			}
+			case 6:
+			{
+				GPIOC->BSRR |= GPIO_BSRR_BR_12;
+ 800040c:	4b5f      	ldr	r3, [pc, #380]	; (800058c <display_numeric+0x29c>)
+ 800040e:	699b      	ldr	r3, [r3, #24]
+ 8000410:	4a5e      	ldr	r2, [pc, #376]	; (800058c <display_numeric+0x29c>)
+ 8000412:	f043 5380 	orr.w	r3, r3, #268435456	; 0x10000000
+ 8000416:	6193      	str	r3, [r2, #24]
+				GPIOD->BSRR |= GPIO_BSRR_BR_5 | GPIO_BSRR_BR_6 | GPIO_BSRR_BR_7;
+ 8000418:	4b5d      	ldr	r3, [pc, #372]	; (8000590 <display_numeric+0x2a0>)
+ 800041a:	699b      	ldr	r3, [r3, #24]
+ 800041c:	4a5c      	ldr	r2, [pc, #368]	; (8000590 <display_numeric+0x2a0>)
+ 800041e:	f443 0360 	orr.w	r3, r3, #14680064	; 0xe00000
+ 8000422:	6193      	str	r3, [r2, #24]
+				GPIOG->BSRR |= GPIO_BSRR_BR_2 | GPIO_BSRR_BR_3;
+ 8000424:	4b5b      	ldr	r3, [pc, #364]	; (8000594 <display_numeric+0x2a4>)
+ 8000426:	699b      	ldr	r3, [r3, #24]
+ 8000428:	4a5a      	ldr	r2, [pc, #360]	; (8000594 <display_numeric+0x2a4>)
+ 800042a:	f443 2340 	orr.w	r3, r3, #786432	; 0xc0000
+ 800042e:	6193      	str	r3, [r2, #24]
+				break;
+ 8000430:	e038      	b.n	80004a4 <display_numeric+0x1b4>
+			}
+			case 7:
+			{
+				GPIOC->BSRR |= GPIO_BSRR_BR_12;
+ 8000432:	4b56      	ldr	r3, [pc, #344]	; (800058c <display_numeric+0x29c>)
+ 8000434:	699b      	ldr	r3, [r3, #24]
+ 8000436:	4a55      	ldr	r2, [pc, #340]	; (800058c <display_numeric+0x29c>)
+ 8000438:	f043 5380 	orr.w	r3, r3, #268435456	; 0x10000000
+ 800043c:	6193      	str	r3, [r2, #24]
+				GPIOD->BSRR |= GPIO_BSRR_BR_2;
+ 800043e:	4b54      	ldr	r3, [pc, #336]	; (8000590 <display_numeric+0x2a0>)
+ 8000440:	699b      	ldr	r3, [r3, #24]
+ 8000442:	4a53      	ldr	r2, [pc, #332]	; (8000590 <display_numeric+0x2a0>)
+ 8000444:	f443 2380 	orr.w	r3, r3, #262144	; 0x40000
+ 8000448:	6193      	str	r3, [r2, #24]
+				GPIOG->BSRR |= GPIO_BSRR_BR_2;
+ 800044a:	4b52      	ldr	r3, [pc, #328]	; (8000594 <display_numeric+0x2a4>)
+ 800044c:	699b      	ldr	r3, [r3, #24]
+ 800044e:	4a51      	ldr	r2, [pc, #324]	; (8000594 <display_numeric+0x2a4>)
+ 8000450:	f443 2380 	orr.w	r3, r3, #262144	; 0x40000
+ 8000454:	6193      	str	r3, [r2, #24]
+				break;
+ 8000456:	e025      	b.n	80004a4 <display_numeric+0x1b4>
+			}
+			case 8:
+			{
+				GPIOC->BSRR |= GPIO_BSRR_BR_12;
+ 8000458:	4b4c      	ldr	r3, [pc, #304]	; (800058c <display_numeric+0x29c>)
+ 800045a:	699b      	ldr	r3, [r3, #24]
+ 800045c:	4a4b      	ldr	r2, [pc, #300]	; (800058c <display_numeric+0x29c>)
+ 800045e:	f043 5380 	orr.w	r3, r3, #268435456	; 0x10000000
+ 8000462:	6193      	str	r3, [r2, #24]
+				GPIOD->BSRR |= GPIO_BSRR_BR_2 | GPIO_BSRR_BR_5 | GPIO_BSRR_BR_6 | GPIO_BSRR_BR_7;
+ 8000464:	4b4a      	ldr	r3, [pc, #296]	; (8000590 <display_numeric+0x2a0>)
+ 8000466:	699b      	ldr	r3, [r3, #24]
+ 8000468:	4a49      	ldr	r2, [pc, #292]	; (8000590 <display_numeric+0x2a0>)
+ 800046a:	f443 0364 	orr.w	r3, r3, #14942208	; 0xe40000
+ 800046e:	6193      	str	r3, [r2, #24]
+				GPIOG->BSRR |= GPIO_BSRR_BR_2 | GPIO_BSRR_BR_3;
+ 8000470:	4b48      	ldr	r3, [pc, #288]	; (8000594 <display_numeric+0x2a4>)
+ 8000472:	699b      	ldr	r3, [r3, #24]
+ 8000474:	4a47      	ldr	r2, [pc, #284]	; (8000594 <display_numeric+0x2a4>)
+ 8000476:	f443 2340 	orr.w	r3, r3, #786432	; 0xc0000
+ 800047a:	6193      	str	r3, [r2, #24]
+				break;
+ 800047c:	e012      	b.n	80004a4 <display_numeric+0x1b4>
+			}
+			case 9:
+			{
+				GPIOC->BSRR |= GPIO_BSRR_BR_12;
+ 800047e:	4b43      	ldr	r3, [pc, #268]	; (800058c <display_numeric+0x29c>)
+ 8000480:	699b      	ldr	r3, [r3, #24]
+ 8000482:	4a42      	ldr	r2, [pc, #264]	; (800058c <display_numeric+0x29c>)
+ 8000484:	f043 5380 	orr.w	r3, r3, #268435456	; 0x10000000
+ 8000488:	6193      	str	r3, [r2, #24]
+				GPIOD->BSRR |= GPIO_BSRR_BR_2 | GPIO_BSRR_BR_5 | GPIO_BSRR_BR_6;
+ 800048a:	4b41      	ldr	r3, [pc, #260]	; (8000590 <display_numeric+0x2a0>)
+ 800048c:	699b      	ldr	r3, [r3, #24]
+ 800048e:	4a40      	ldr	r2, [pc, #256]	; (8000590 <display_numeric+0x2a0>)
+ 8000490:	f443 03c8 	orr.w	r3, r3, #6553600	; 0x640000
+ 8000494:	6193      	str	r3, [r2, #24]
+				GPIOG->BSRR |= GPIO_BSRR_BR_2 | GPIO_BSRR_BR_3;
+ 8000496:	4b3f      	ldr	r3, [pc, #252]	; (8000594 <display_numeric+0x2a4>)
+ 8000498:	699b      	ldr	r3, [r3, #24]
+ 800049a:	4a3e      	ldr	r2, [pc, #248]	; (8000594 <display_numeric+0x2a4>)
+ 800049c:	f443 2340 	orr.w	r3, r3, #786432	; 0xc0000
+ 80004a0:	6193      	str	r3, [r2, #24]
+				break;
+ 80004a2:	bf00      	nop
+			}
+		}
+	}
+ 80004a4:	e06c      	b.n	8000580 <display_numeric+0x290>
+	else
+		for(int i = 0; i <= 200000; i++)
+ 80004a6:	2300      	movs	r3, #0
+ 80004a8:	60fb      	str	r3, [r7, #12]
+ 80004aa:	e064      	b.n	8000576 <display_numeric+0x286>
+		{
+			GPIOC->BSRR |= GPIO_BSRR_BR_11;
+ 80004ac:	4b37      	ldr	r3, [pc, #220]	; (800058c <display_numeric+0x29c>)
+ 80004ae:	699b      	ldr	r3, [r3, #24]
+ 80004b0:	4a36      	ldr	r2, [pc, #216]	; (800058c <display_numeric+0x29c>)
+ 80004b2:	f043 6300 	orr.w	r3, r3, #134217728	; 0x8000000
+ 80004b6:	6193      	str	r3, [r2, #24]
+			GPIOC->BSRR |= GPIO_BSRR_BR_12;
+ 80004b8:	4b34      	ldr	r3, [pc, #208]	; (800058c <display_numeric+0x29c>)
+ 80004ba:	699b      	ldr	r3, [r3, #24]
+ 80004bc:	4a33      	ldr	r2, [pc, #204]	; (800058c <display_numeric+0x29c>)
+ 80004be:	f043 5380 	orr.w	r3, r3, #268435456	; 0x10000000
+ 80004c2:	6193      	str	r3, [r2, #24]
+			GPIOD->BSRR |= GPIO_BSRR_BR_5;
+ 80004c4:	4b32      	ldr	r3, [pc, #200]	; (8000590 <display_numeric+0x2a0>)
+ 80004c6:	699b      	ldr	r3, [r3, #24]
+ 80004c8:	4a31      	ldr	r2, [pc, #196]	; (8000590 <display_numeric+0x2a0>)
+ 80004ca:	f443 1300 	orr.w	r3, r3, #2097152	; 0x200000
+ 80004ce:	6193      	str	r3, [r2, #24]
+			GPIOD->BSRR |= GPIO_BSRR_BR_6;
+ 80004d0:	4b2f      	ldr	r3, [pc, #188]	; (8000590 <display_numeric+0x2a0>)
+ 80004d2:	699b      	ldr	r3, [r3, #24]
+ 80004d4:	4a2e      	ldr	r2, [pc, #184]	; (8000590 <display_numeric+0x2a0>)
+ 80004d6:	f443 0380 	orr.w	r3, r3, #4194304	; 0x400000
+ 80004da:	6193      	str	r3, [r2, #24]
+			GPIOD->BSRR |= GPIO_BSRR_BR_7;
+ 80004dc:	4b2c      	ldr	r3, [pc, #176]	; (8000590 <display_numeric+0x2a0>)
+ 80004de:	699b      	ldr	r3, [r3, #24]
+ 80004e0:	4a2b      	ldr	r2, [pc, #172]	; (8000590 <display_numeric+0x2a0>)
+ 80004e2:	f443 0300 	orr.w	r3, r3, #8388608	; 0x800000
+ 80004e6:	6193      	str	r3, [r2, #24]
+			GPIOG->BSRR |= GPIO_BSRR_BR_3;
+ 80004e8:	4b2a      	ldr	r3, [pc, #168]	; (8000594 <display_numeric+0x2a4>)
+ 80004ea:	699b      	ldr	r3, [r3, #24]
+ 80004ec:	4a29      	ldr	r2, [pc, #164]	; (8000594 <display_numeric+0x2a4>)
+ 80004ee:	f443 2300 	orr.w	r3, r3, #524288	; 0x80000
+ 80004f2:	6193      	str	r3, [r2, #24]
+			clear_display();
+ 80004f4:	f7ff fedc 	bl	80002b0 <clear_display>
+			GPIOC->BSRR |= GPIO_BSRR_BR_10;
+ 80004f8:	4b24      	ldr	r3, [pc, #144]	; (800058c <display_numeric+0x29c>)
+ 80004fa:	699b      	ldr	r3, [r3, #24]
+ 80004fc:	4a23      	ldr	r2, [pc, #140]	; (800058c <display_numeric+0x29c>)
+ 80004fe:	f043 6380 	orr.w	r3, r3, #67108864	; 0x4000000
+ 8000502:	6193      	str	r3, [r2, #24]
+			GPIOD->BSRR |= GPIO_BSRR_BR_5;
+ 8000504:	4b22      	ldr	r3, [pc, #136]	; (8000590 <display_numeric+0x2a0>)
+ 8000506:	699b      	ldr	r3, [r3, #24]
+ 8000508:	4a21      	ldr	r2, [pc, #132]	; (8000590 <display_numeric+0x2a0>)
+ 800050a:	f443 1300 	orr.w	r3, r3, #2097152	; 0x200000
+ 800050e:	6193      	str	r3, [r2, #24]
+			GPIOD->BSRR |= GPIO_BSRR_BR_7;
+ 8000510:	4b1f      	ldr	r3, [pc, #124]	; (8000590 <display_numeric+0x2a0>)
+ 8000512:	699b      	ldr	r3, [r3, #24]
+ 8000514:	4a1e      	ldr	r2, [pc, #120]	; (8000590 <display_numeric+0x2a0>)
+ 8000516:	f443 0300 	orr.w	r3, r3, #8388608	; 0x800000
+ 800051a:	6193      	str	r3, [r2, #24]
+			clear_display();
+ 800051c:	f7ff fec8 	bl	80002b0 <clear_display>
+			GPIOC->BSRR |= GPIO_BSRR_BR_9;
+ 8000520:	4b1a      	ldr	r3, [pc, #104]	; (800058c <display_numeric+0x29c>)
+ 8000522:	699b      	ldr	r3, [r3, #24]
+ 8000524:	4a19      	ldr	r2, [pc, #100]	; (800058c <display_numeric+0x29c>)
+ 8000526:	f043 7300 	orr.w	r3, r3, #33554432	; 0x2000000
+ 800052a:	6193      	str	r3, [r2, #24]
+			GPIOD->BSRR |= GPIO_BSRR_BR_5;
+ 800052c:	4b18      	ldr	r3, [pc, #96]	; (8000590 <display_numeric+0x2a0>)
+ 800052e:	699b      	ldr	r3, [r3, #24]
+ 8000530:	4a17      	ldr	r2, [pc, #92]	; (8000590 <display_numeric+0x2a0>)
+ 8000532:	f443 1300 	orr.w	r3, r3, #2097152	; 0x200000
+ 8000536:	6193      	str	r3, [r2, #24]
+			GPIOD->BSRR |= GPIO_BSRR_BR_7;
+ 8000538:	4b15      	ldr	r3, [pc, #84]	; (8000590 <display_numeric+0x2a0>)
+ 800053a:	699b      	ldr	r3, [r3, #24]
+ 800053c:	4a14      	ldr	r2, [pc, #80]	; (8000590 <display_numeric+0x2a0>)
+ 800053e:	f443 0300 	orr.w	r3, r3, #8388608	; 0x800000
+ 8000542:	6193      	str	r3, [r2, #24]
+			clear_display();
+ 8000544:	f7ff feb4 	bl	80002b0 <clear_display>
+			GPIOC->BSRR |= GPIO_BSRR_BR_8;
+ 8000548:	4b10      	ldr	r3, [pc, #64]	; (800058c <display_numeric+0x29c>)
+ 800054a:	699b      	ldr	r3, [r3, #24]
+ 800054c:	4a0f      	ldr	r2, [pc, #60]	; (800058c <display_numeric+0x29c>)
+ 800054e:	f043 7380 	orr.w	r3, r3, #16777216	; 0x1000000
+ 8000552:	6193      	str	r3, [r2, #24]
+			GPIOD->BSRR |= GPIO_BSRR_BR_2;
+ 8000554:	4b0e      	ldr	r3, [pc, #56]	; (8000590 <display_numeric+0x2a0>)
+ 8000556:	699b      	ldr	r3, [r3, #24]
+ 8000558:	4a0d      	ldr	r2, [pc, #52]	; (8000590 <display_numeric+0x2a0>)
+ 800055a:	f443 2380 	orr.w	r3, r3, #262144	; 0x40000
+ 800055e:	6193      	str	r3, [r2, #24]
+			GPIOG->BSRR |= GPIO_BSRR_BR_2;
+ 8000560:	4b0c      	ldr	r3, [pc, #48]	; (8000594 <display_numeric+0x2a4>)
+ 8000562:	699b      	ldr	r3, [r3, #24]
+ 8000564:	4a0b      	ldr	r2, [pc, #44]	; (8000594 <display_numeric+0x2a4>)
+ 8000566:	f443 2380 	orr.w	r3, r3, #262144	; 0x40000
+ 800056a:	6193      	str	r3, [r2, #24]
+			clear_display();
+ 800056c:	f7ff fea0 	bl	80002b0 <clear_display>
+		for(int i = 0; i <= 200000; i++)
+ 8000570:	68fb      	ldr	r3, [r7, #12]
+ 8000572:	3301      	adds	r3, #1
+ 8000574:	60fb      	str	r3, [r7, #12]
+ 8000576:	68fb      	ldr	r3, [r7, #12]
+ 8000578:	4a07      	ldr	r2, [pc, #28]	; (8000598 <display_numeric+0x2a8>)
+ 800057a:	4293      	cmp	r3, r2
+ 800057c:	dd96      	ble.n	80004ac <display_numeric+0x1bc>
+		}
+}
+ 800057e:	e000      	b.n	8000582 <display_numeric+0x292>
+	}
+ 8000580:	bf00      	nop
+}
+ 8000582:	bf00      	nop
+ 8000584:	3710      	adds	r7, #16
+ 8000586:	46bd      	mov	sp, r7
+ 8000588:	bd80      	pop	{r7, pc}
+ 800058a:	bf00      	nop
+ 800058c:	40020800 	.word	0x40020800
+ 8000590:	40020c00 	.word	0x40020c00
+ 8000594:	40021800 	.word	0x40021800
+ 8000598:	00030d40 	.word	0x00030d40
+
+0800059c <display_value>:
+
+void display_value(int value)
+{
+ 800059c:	b580      	push	{r7, lr}
+ 800059e:	b084      	sub	sp, #16
+ 80005a0:	af00      	add	r7, sp, #0
+ 80005a2:	6078      	str	r0, [r7, #4]
+	clear_display();
+ 80005a4:	f7ff fe84 	bl	80002b0 <clear_display>
+	if(value < 10000 && value >-1000)
+ 80005a8:	687b      	ldr	r3, [r7, #4]
+ 80005aa:	f242 720f 	movw	r2, #9999	; 0x270f
+ 80005ae:	4293      	cmp	r3, r2
+ 80005b0:	f300 821d 	bgt.w	80009ee <display_value+0x452>
+ 80005b4:	687b      	ldr	r3, [r7, #4]
+ 80005b6:	f513 7f7a 	cmn.w	r3, #1000	; 0x3e8
+ 80005ba:	f340 8218 	ble.w	80009ee <display_value+0x452>
+	{
+		while(1)
+		{
+			if(value > 0)
+ 80005be:	687b      	ldr	r3, [r7, #4]
+ 80005c0:	2b00      	cmp	r3, #0
+ 80005c2:	f340 80e6 	ble.w	8000792 <display_value+0x1f6>
+			{
+				GPIOC->BSRR |= GPIO_BSRR_BR_8;
+ 80005c6:	4bb1      	ldr	r3, [pc, #708]	; (800088c <display_value+0x2f0>)
+ 80005c8:	699b      	ldr	r3, [r3, #24]
+ 80005ca:	4ab0      	ldr	r2, [pc, #704]	; (800088c <display_value+0x2f0>)
+ 80005cc:	f043 7380 	orr.w	r3, r3, #16777216	; 0x1000000
+ 80005d0:	6193      	str	r3, [r2, #24]
+				display_numeric(value%10);
+ 80005d2:	687a      	ldr	r2, [r7, #4]
+ 80005d4:	4bae      	ldr	r3, [pc, #696]	; (8000890 <display_value+0x2f4>)
+ 80005d6:	fb83 1302 	smull	r1, r3, r3, r2
+ 80005da:	1099      	asrs	r1, r3, #2
+ 80005dc:	17d3      	asrs	r3, r2, #31
+ 80005de:	1ac9      	subs	r1, r1, r3
+ 80005e0:	460b      	mov	r3, r1
+ 80005e2:	009b      	lsls	r3, r3, #2
+ 80005e4:	440b      	add	r3, r1
+ 80005e6:	005b      	lsls	r3, r3, #1
+ 80005e8:	1ad1      	subs	r1, r2, r3
+ 80005ea:	4608      	mov	r0, r1
+ 80005ec:	f7ff fe80 	bl	80002f0 <display_numeric>
+				clear_display();
+ 80005f0:	f7ff fe5e 	bl	80002b0 <clear_display>
+				if((value/10)%10 != 0 || (value/100)%10 != 0 || (value/1000)%10 != 0)
+ 80005f4:	687b      	ldr	r3, [r7, #4]
+ 80005f6:	4aa6      	ldr	r2, [pc, #664]	; (8000890 <display_value+0x2f4>)
+ 80005f8:	fb82 1203 	smull	r1, r2, r2, r3
+ 80005fc:	1092      	asrs	r2, r2, #2
+ 80005fe:	17db      	asrs	r3, r3, #31
+ 8000600:	1ad1      	subs	r1, r2, r3
+ 8000602:	4ba3      	ldr	r3, [pc, #652]	; (8000890 <display_value+0x2f4>)
+ 8000604:	fb83 2301 	smull	r2, r3, r3, r1
+ 8000608:	109a      	asrs	r2, r3, #2
+ 800060a:	17cb      	asrs	r3, r1, #31
+ 800060c:	1ad2      	subs	r2, r2, r3
+ 800060e:	4613      	mov	r3, r2
+ 8000610:	009b      	lsls	r3, r3, #2
+ 8000612:	4413      	add	r3, r2
+ 8000614:	005b      	lsls	r3, r3, #1
+ 8000616:	1aca      	subs	r2, r1, r3
+ 8000618:	2a00      	cmp	r2, #0
+ 800061a:	d127      	bne.n	800066c <display_value+0xd0>
+ 800061c:	687b      	ldr	r3, [r7, #4]
+ 800061e:	4a9d      	ldr	r2, [pc, #628]	; (8000894 <display_value+0x2f8>)
+ 8000620:	fb82 1203 	smull	r1, r2, r2, r3
+ 8000624:	1152      	asrs	r2, r2, #5
+ 8000626:	17db      	asrs	r3, r3, #31
+ 8000628:	1ad1      	subs	r1, r2, r3
+ 800062a:	4b99      	ldr	r3, [pc, #612]	; (8000890 <display_value+0x2f4>)
+ 800062c:	fb83 2301 	smull	r2, r3, r3, r1
+ 8000630:	109a      	asrs	r2, r3, #2
+ 8000632:	17cb      	asrs	r3, r1, #31
+ 8000634:	1ad2      	subs	r2, r2, r3
+ 8000636:	4613      	mov	r3, r2
+ 8000638:	009b      	lsls	r3, r3, #2
+ 800063a:	4413      	add	r3, r2
+ 800063c:	005b      	lsls	r3, r3, #1
+ 800063e:	1aca      	subs	r2, r1, r3
+ 8000640:	2a00      	cmp	r2, #0
+ 8000642:	d113      	bne.n	800066c <display_value+0xd0>
+ 8000644:	687b      	ldr	r3, [r7, #4]
+ 8000646:	4a94      	ldr	r2, [pc, #592]	; (8000898 <display_value+0x2fc>)
+ 8000648:	fb82 1203 	smull	r1, r2, r2, r3
+ 800064c:	1192      	asrs	r2, r2, #6
+ 800064e:	17db      	asrs	r3, r3, #31
+ 8000650:	1ad1      	subs	r1, r2, r3
+ 8000652:	4b8f      	ldr	r3, [pc, #572]	; (8000890 <display_value+0x2f4>)
+ 8000654:	fb83 2301 	smull	r2, r3, r3, r1
+ 8000658:	109a      	asrs	r2, r3, #2
+ 800065a:	17cb      	asrs	r3, r1, #31
+ 800065c:	1ad2      	subs	r2, r2, r3
+ 800065e:	4613      	mov	r3, r2
+ 8000660:	009b      	lsls	r3, r3, #2
+ 8000662:	4413      	add	r3, r2
+ 8000664:	005b      	lsls	r3, r3, #1
+ 8000666:	1aca      	subs	r2, r1, r3
+ 8000668:	2a00      	cmp	r2, #0
+ 800066a:	d01c      	beq.n	80006a6 <display_value+0x10a>
+				{
+					GPIOC->BSRR |= GPIO_BSRR_BR_9;
+ 800066c:	4b87      	ldr	r3, [pc, #540]	; (800088c <display_value+0x2f0>)
+ 800066e:	699b      	ldr	r3, [r3, #24]
+ 8000670:	4a86      	ldr	r2, [pc, #536]	; (800088c <display_value+0x2f0>)
+ 8000672:	f043 7300 	orr.w	r3, r3, #33554432	; 0x2000000
+ 8000676:	6193      	str	r3, [r2, #24]
+					display_numeric((value/10)%10);
+ 8000678:	687b      	ldr	r3, [r7, #4]
+ 800067a:	4a85      	ldr	r2, [pc, #532]	; (8000890 <display_value+0x2f4>)
+ 800067c:	fb82 1203 	smull	r1, r2, r2, r3
+ 8000680:	1092      	asrs	r2, r2, #2
+ 8000682:	17db      	asrs	r3, r3, #31
+ 8000684:	1ad2      	subs	r2, r2, r3
+ 8000686:	4b82      	ldr	r3, [pc, #520]	; (8000890 <display_value+0x2f4>)
+ 8000688:	fb83 1302 	smull	r1, r3, r3, r2
+ 800068c:	1099      	asrs	r1, r3, #2
+ 800068e:	17d3      	asrs	r3, r2, #31
+ 8000690:	1ac9      	subs	r1, r1, r3
+ 8000692:	460b      	mov	r3, r1
+ 8000694:	009b      	lsls	r3, r3, #2
+ 8000696:	440b      	add	r3, r1
+ 8000698:	005b      	lsls	r3, r3, #1
+ 800069a:	1ad1      	subs	r1, r2, r3
+ 800069c:	4608      	mov	r0, r1
+ 800069e:	f7ff fe27 	bl	80002f0 <display_numeric>
+					clear_display();
+ 80006a2:	f7ff fe05 	bl	80002b0 <clear_display>
+				}
+				if((value/100)%10 != 0 || (value/1000)%10 != 0)
+ 80006a6:	687b      	ldr	r3, [r7, #4]
+ 80006a8:	4a7a      	ldr	r2, [pc, #488]	; (8000894 <display_value+0x2f8>)
+ 80006aa:	fb82 1203 	smull	r1, r2, r2, r3
+ 80006ae:	1152      	asrs	r2, r2, #5
+ 80006b0:	17db      	asrs	r3, r3, #31
+ 80006b2:	1ad1      	subs	r1, r2, r3
+ 80006b4:	4b76      	ldr	r3, [pc, #472]	; (8000890 <display_value+0x2f4>)
+ 80006b6:	fb83 2301 	smull	r2, r3, r3, r1
+ 80006ba:	109a      	asrs	r2, r3, #2
+ 80006bc:	17cb      	asrs	r3, r1, #31
+ 80006be:	1ad2      	subs	r2, r2, r3
+ 80006c0:	4613      	mov	r3, r2
+ 80006c2:	009b      	lsls	r3, r3, #2
+ 80006c4:	4413      	add	r3, r2
+ 80006c6:	005b      	lsls	r3, r3, #1
+ 80006c8:	1aca      	subs	r2, r1, r3
+ 80006ca:	2a00      	cmp	r2, #0
+ 80006cc:	d113      	bne.n	80006f6 <display_value+0x15a>
+ 80006ce:	687b      	ldr	r3, [r7, #4]
+ 80006d0:	4a71      	ldr	r2, [pc, #452]	; (8000898 <display_value+0x2fc>)
+ 80006d2:	fb82 1203 	smull	r1, r2, r2, r3
+ 80006d6:	1192      	asrs	r2, r2, #6
+ 80006d8:	17db      	asrs	r3, r3, #31
+ 80006da:	1ad1      	subs	r1, r2, r3
+ 80006dc:	4b6c      	ldr	r3, [pc, #432]	; (8000890 <display_value+0x2f4>)
+ 80006de:	fb83 2301 	smull	r2, r3, r3, r1
+ 80006e2:	109a      	asrs	r2, r3, #2
+ 80006e4:	17cb      	asrs	r3, r1, #31
+ 80006e6:	1ad2      	subs	r2, r2, r3
+ 80006e8:	4613      	mov	r3, r2
+ 80006ea:	009b      	lsls	r3, r3, #2
+ 80006ec:	4413      	add	r3, r2
+ 80006ee:	005b      	lsls	r3, r3, #1
+ 80006f0:	1aca      	subs	r2, r1, r3
+ 80006f2:	2a00      	cmp	r2, #0
+ 80006f4:	d01c      	beq.n	8000730 <display_value+0x194>
+				{
+					GPIOC->BSRR |= GPIO_BSRR_BR_10;
+ 80006f6:	4b65      	ldr	r3, [pc, #404]	; (800088c <display_value+0x2f0>)
+ 80006f8:	699b      	ldr	r3, [r3, #24]
+ 80006fa:	4a64      	ldr	r2, [pc, #400]	; (800088c <display_value+0x2f0>)
+ 80006fc:	f043 6380 	orr.w	r3, r3, #67108864	; 0x4000000
+ 8000700:	6193      	str	r3, [r2, #24]
+					display_numeric((value/100)%10);
+ 8000702:	687b      	ldr	r3, [r7, #4]
+ 8000704:	4a63      	ldr	r2, [pc, #396]	; (8000894 <display_value+0x2f8>)
+ 8000706:	fb82 1203 	smull	r1, r2, r2, r3
+ 800070a:	1152      	asrs	r2, r2, #5
+ 800070c:	17db      	asrs	r3, r3, #31
+ 800070e:	1ad2      	subs	r2, r2, r3
+ 8000710:	4b5f      	ldr	r3, [pc, #380]	; (8000890 <display_value+0x2f4>)
+ 8000712:	fb83 1302 	smull	r1, r3, r3, r2
+ 8000716:	1099      	asrs	r1, r3, #2
+ 8000718:	17d3      	asrs	r3, r2, #31
+ 800071a:	1ac9      	subs	r1, r1, r3
+ 800071c:	460b      	mov	r3, r1
+ 800071e:	009b      	lsls	r3, r3, #2
+ 8000720:	440b      	add	r3, r1
+ 8000722:	005b      	lsls	r3, r3, #1
+ 8000724:	1ad1      	subs	r1, r2, r3
+ 8000726:	4608      	mov	r0, r1
+ 8000728:	f7ff fde2 	bl	80002f0 <display_numeric>
+					clear_display();
+ 800072c:	f7ff fdc0 	bl	80002b0 <clear_display>
+				}
+				if((value/1000)%10 != 0)
+ 8000730:	687b      	ldr	r3, [r7, #4]
+ 8000732:	4a59      	ldr	r2, [pc, #356]	; (8000898 <display_value+0x2fc>)
+ 8000734:	fb82 1203 	smull	r1, r2, r2, r3
+ 8000738:	1192      	asrs	r2, r2, #6
+ 800073a:	17db      	asrs	r3, r3, #31
+ 800073c:	1ad1      	subs	r1, r2, r3
+ 800073e:	4b54      	ldr	r3, [pc, #336]	; (8000890 <display_value+0x2f4>)
+ 8000740:	fb83 2301 	smull	r2, r3, r3, r1
+ 8000744:	109a      	asrs	r2, r3, #2
+ 8000746:	17cb      	asrs	r3, r1, #31
+ 8000748:	1ad2      	subs	r2, r2, r3
+ 800074a:	4613      	mov	r3, r2
+ 800074c:	009b      	lsls	r3, r3, #2
+ 800074e:	4413      	add	r3, r2
+ 8000750:	005b      	lsls	r3, r3, #1
+ 8000752:	1aca      	subs	r2, r1, r3
+ 8000754:	2a00      	cmp	r2, #0
+ 8000756:	d01c      	beq.n	8000792 <display_value+0x1f6>
+				{
+					GPIOC->BSRR |= GPIO_BSRR_BR_11;
+ 8000758:	4b4c      	ldr	r3, [pc, #304]	; (800088c <display_value+0x2f0>)
+ 800075a:	699b      	ldr	r3, [r3, #24]
+ 800075c:	4a4b      	ldr	r2, [pc, #300]	; (800088c <display_value+0x2f0>)
+ 800075e:	f043 6300 	orr.w	r3, r3, #134217728	; 0x8000000
+ 8000762:	6193      	str	r3, [r2, #24]
+					display_numeric((value/1000)%10);
+ 8000764:	687b      	ldr	r3, [r7, #4]
+ 8000766:	4a4c      	ldr	r2, [pc, #304]	; (8000898 <display_value+0x2fc>)
+ 8000768:	fb82 1203 	smull	r1, r2, r2, r3
+ 800076c:	1192      	asrs	r2, r2, #6
+ 800076e:	17db      	asrs	r3, r3, #31
+ 8000770:	1ad2      	subs	r2, r2, r3
+ 8000772:	4b47      	ldr	r3, [pc, #284]	; (8000890 <display_value+0x2f4>)
+ 8000774:	fb83 1302 	smull	r1, r3, r3, r2
+ 8000778:	1099      	asrs	r1, r3, #2
+ 800077a:	17d3      	asrs	r3, r2, #31
+ 800077c:	1ac9      	subs	r1, r1, r3
+ 800077e:	460b      	mov	r3, r1
+ 8000780:	009b      	lsls	r3, r3, #2
+ 8000782:	440b      	add	r3, r1
+ 8000784:	005b      	lsls	r3, r3, #1
+ 8000786:	1ad1      	subs	r1, r2, r3
+ 8000788:	4608      	mov	r0, r1
+ 800078a:	f7ff fdb1 	bl	80002f0 <display_numeric>
+					clear_display();
+ 800078e:	f7ff fd8f 	bl	80002b0 <clear_display>
+				}
+			}
+			if(value == 0)
+ 8000792:	687b      	ldr	r3, [r7, #4]
+ 8000794:	2b00      	cmp	r3, #0
+ 8000796:	d10a      	bne.n	80007ae <display_value+0x212>
+			{
+				GPIOC->BSRR |= GPIO_BSRR_BR_8;
+ 8000798:	4b3c      	ldr	r3, [pc, #240]	; (800088c <display_value+0x2f0>)
+ 800079a:	699b      	ldr	r3, [r3, #24]
+ 800079c:	4a3b      	ldr	r2, [pc, #236]	; (800088c <display_value+0x2f0>)
+ 800079e:	f043 7380 	orr.w	r3, r3, #16777216	; 0x1000000
+ 80007a2:	6193      	str	r3, [r2, #24]
+				display_numeric(0);
+ 80007a4:	2000      	movs	r0, #0
+ 80007a6:	f7ff fda3 	bl	80002f0 <display_numeric>
+				clear_display();
+ 80007aa:	f7ff fd81 	bl	80002b0 <clear_display>
+			}
+			if(value < 0)
+ 80007ae:	687b      	ldr	r3, [r7, #4]
+ 80007b0:	2b00      	cmp	r3, #0
+ 80007b2:	f6bf af04 	bge.w	80005be <display_value+0x22>
+			{
+				GPIOC->BSRR |= GPIO_BSRR_BR_8;
+ 80007b6:	4b35      	ldr	r3, [pc, #212]	; (800088c <display_value+0x2f0>)
+ 80007b8:	699b      	ldr	r3, [r3, #24]
+ 80007ba:	4a34      	ldr	r2, [pc, #208]	; (800088c <display_value+0x2f0>)
+ 80007bc:	f043 7380 	orr.w	r3, r3, #16777216	; 0x1000000
+ 80007c0:	6193      	str	r3, [r2, #24]
+				display_numeric(abs(value)%10);
+ 80007c2:	687b      	ldr	r3, [r7, #4]
+ 80007c4:	ea83 72e3 	eor.w	r2, r3, r3, asr #31
+ 80007c8:	eba2 72e3 	sub.w	r2, r2, r3, asr #31
+ 80007cc:	4b30      	ldr	r3, [pc, #192]	; (8000890 <display_value+0x2f4>)
+ 80007ce:	fb83 1302 	smull	r1, r3, r3, r2
+ 80007d2:	1099      	asrs	r1, r3, #2
+ 80007d4:	17d3      	asrs	r3, r2, #31
+ 80007d6:	1ac9      	subs	r1, r1, r3
+ 80007d8:	460b      	mov	r3, r1
+ 80007da:	009b      	lsls	r3, r3, #2
+ 80007dc:	440b      	add	r3, r1
+ 80007de:	005b      	lsls	r3, r3, #1
+ 80007e0:	1ad1      	subs	r1, r2, r3
+ 80007e2:	4608      	mov	r0, r1
+ 80007e4:	f7ff fd84 	bl	80002f0 <display_numeric>
+				clear_display();
+ 80007e8:	f7ff fd62 	bl	80002b0 <clear_display>
+				if((abs(value)/10)%10 != 0 || (abs(value)/100)%10 != 0)
+ 80007ec:	687b      	ldr	r3, [r7, #4]
+ 80007ee:	2b00      	cmp	r3, #0
+ 80007f0:	bfb8      	it	lt
+ 80007f2:	425b      	neglt	r3, r3
+ 80007f4:	4a26      	ldr	r2, [pc, #152]	; (8000890 <display_value+0x2f4>)
+ 80007f6:	fb82 1203 	smull	r1, r2, r2, r3
+ 80007fa:	1092      	asrs	r2, r2, #2
+ 80007fc:	17db      	asrs	r3, r3, #31
+ 80007fe:	1ad1      	subs	r1, r2, r3
+ 8000800:	4b23      	ldr	r3, [pc, #140]	; (8000890 <display_value+0x2f4>)
+ 8000802:	fb83 2301 	smull	r2, r3, r3, r1
+ 8000806:	109a      	asrs	r2, r3, #2
+ 8000808:	17cb      	asrs	r3, r1, #31
+ 800080a:	1ad2      	subs	r2, r2, r3
+ 800080c:	4613      	mov	r3, r2
+ 800080e:	009b      	lsls	r3, r3, #2
+ 8000810:	4413      	add	r3, r2
+ 8000812:	005b      	lsls	r3, r3, #1
+ 8000814:	1aca      	subs	r2, r1, r3
+ 8000816:	2a00      	cmp	r2, #0
+ 8000818:	d116      	bne.n	8000848 <display_value+0x2ac>
+ 800081a:	687b      	ldr	r3, [r7, #4]
+ 800081c:	2b00      	cmp	r3, #0
+ 800081e:	bfb8      	it	lt
+ 8000820:	425b      	neglt	r3, r3
+ 8000822:	4a1c      	ldr	r2, [pc, #112]	; (8000894 <display_value+0x2f8>)
+ 8000824:	fb82 1203 	smull	r1, r2, r2, r3
+ 8000828:	1152      	asrs	r2, r2, #5
+ 800082a:	17db      	asrs	r3, r3, #31
+ 800082c:	1ad1      	subs	r1, r2, r3
+ 800082e:	4b18      	ldr	r3, [pc, #96]	; (8000890 <display_value+0x2f4>)
+ 8000830:	fb83 2301 	smull	r2, r3, r3, r1
+ 8000834:	109a      	asrs	r2, r3, #2
+ 8000836:	17cb      	asrs	r3, r1, #31
+ 8000838:	1ad2      	subs	r2, r2, r3
+ 800083a:	4613      	mov	r3, r2
+ 800083c:	009b      	lsls	r3, r3, #2
+ 800083e:	4413      	add	r3, r2
+ 8000840:	005b      	lsls	r3, r3, #1
+ 8000842:	1aca      	subs	r2, r1, r3
+ 8000844:	2a00      	cmp	r2, #0
+ 8000846:	d029      	beq.n	800089c <display_value+0x300>
+				{
+					GPIOC->BSRR |= GPIO_BSRR_BR_9;
+ 8000848:	4b10      	ldr	r3, [pc, #64]	; (800088c <display_value+0x2f0>)
+ 800084a:	699b      	ldr	r3, [r3, #24]
+ 800084c:	4a0f      	ldr	r2, [pc, #60]	; (800088c <display_value+0x2f0>)
+ 800084e:	f043 7300 	orr.w	r3, r3, #33554432	; 0x2000000
+ 8000852:	6193      	str	r3, [r2, #24]
+					display_numeric((abs(value)/10)%10);
+ 8000854:	687b      	ldr	r3, [r7, #4]
+ 8000856:	2b00      	cmp	r3, #0
+ 8000858:	bfb8      	it	lt
+ 800085a:	425b      	neglt	r3, r3
+ 800085c:	4a0c      	ldr	r2, [pc, #48]	; (8000890 <display_value+0x2f4>)
+ 800085e:	fb82 1203 	smull	r1, r2, r2, r3
+ 8000862:	1092      	asrs	r2, r2, #2
+ 8000864:	17db      	asrs	r3, r3, #31
+ 8000866:	1ad2      	subs	r2, r2, r3
+ 8000868:	4b09      	ldr	r3, [pc, #36]	; (8000890 <display_value+0x2f4>)
+ 800086a:	fb83 1302 	smull	r1, r3, r3, r2
+ 800086e:	1099      	asrs	r1, r3, #2
+ 8000870:	17d3      	asrs	r3, r2, #31
+ 8000872:	1ac9      	subs	r1, r1, r3
+ 8000874:	460b      	mov	r3, r1
+ 8000876:	009b      	lsls	r3, r3, #2
+ 8000878:	440b      	add	r3, r1
+ 800087a:	005b      	lsls	r3, r3, #1
+ 800087c:	1ad1      	subs	r1, r2, r3
+ 800087e:	4608      	mov	r0, r1
+ 8000880:	f7ff fd36 	bl	80002f0 <display_numeric>
+					clear_display();
+ 8000884:	f7ff fd14 	bl	80002b0 <clear_display>
+ 8000888:	e016      	b.n	80008b8 <display_value+0x31c>
+ 800088a:	bf00      	nop
+ 800088c:	40020800 	.word	0x40020800
+ 8000890:	66666667 	.word	0x66666667
+ 8000894:	51eb851f 	.word	0x51eb851f
+ 8000898:	10624dd3 	.word	0x10624dd3
+
+				}
+				else
+				{
+					GPIOC->BSRR |= GPIO_BSRR_BR_9;
+ 800089c:	4b8f      	ldr	r3, [pc, #572]	; (8000adc <display_value+0x540>)
+ 800089e:	699b      	ldr	r3, [r3, #24]
+ 80008a0:	4a8e      	ldr	r2, [pc, #568]	; (8000adc <display_value+0x540>)
+ 80008a2:	f043 7300 	orr.w	r3, r3, #33554432	; 0x2000000
+ 80008a6:	6193      	str	r3, [r2, #24]
+					GPIOD->BSRR |= GPIO_BSRR_BR_5;
+ 80008a8:	4b8d      	ldr	r3, [pc, #564]	; (8000ae0 <display_value+0x544>)
+ 80008aa:	699b      	ldr	r3, [r3, #24]
+ 80008ac:	4a8c      	ldr	r2, [pc, #560]	; (8000ae0 <display_value+0x544>)
+ 80008ae:	f443 1300 	orr.w	r3, r3, #2097152	; 0x200000
+ 80008b2:	6193      	str	r3, [r2, #24]
+					clear_display();
+ 80008b4:	f7ff fcfc 	bl	80002b0 <clear_display>
+				}
+				if((abs(value)/100)%10 != 0 || (abs(value)/1000)%10 != 0)
+ 80008b8:	687b      	ldr	r3, [r7, #4]
+ 80008ba:	2b00      	cmp	r3, #0
+ 80008bc:	bfb8      	it	lt
+ 80008be:	425b      	neglt	r3, r3
+ 80008c0:	4a88      	ldr	r2, [pc, #544]	; (8000ae4 <display_value+0x548>)
+ 80008c2:	fb82 1203 	smull	r1, r2, r2, r3
+ 80008c6:	1152      	asrs	r2, r2, #5
+ 80008c8:	17db      	asrs	r3, r3, #31
+ 80008ca:	1ad1      	subs	r1, r2, r3
+ 80008cc:	4b86      	ldr	r3, [pc, #536]	; (8000ae8 <display_value+0x54c>)
+ 80008ce:	fb83 2301 	smull	r2, r3, r3, r1
+ 80008d2:	109a      	asrs	r2, r3, #2
+ 80008d4:	17cb      	asrs	r3, r1, #31
+ 80008d6:	1ad2      	subs	r2, r2, r3
+ 80008d8:	4613      	mov	r3, r2
+ 80008da:	009b      	lsls	r3, r3, #2
+ 80008dc:	4413      	add	r3, r2
+ 80008de:	005b      	lsls	r3, r3, #1
+ 80008e0:	1aca      	subs	r2, r1, r3
+ 80008e2:	2a00      	cmp	r2, #0
+ 80008e4:	d116      	bne.n	8000914 <display_value+0x378>
+ 80008e6:	687b      	ldr	r3, [r7, #4]
+ 80008e8:	2b00      	cmp	r3, #0
+ 80008ea:	bfb8      	it	lt
+ 80008ec:	425b      	neglt	r3, r3
+ 80008ee:	4a7f      	ldr	r2, [pc, #508]	; (8000aec <display_value+0x550>)
+ 80008f0:	fb82 1203 	smull	r1, r2, r2, r3
+ 80008f4:	1192      	asrs	r2, r2, #6
+ 80008f6:	17db      	asrs	r3, r3, #31
+ 80008f8:	1ad1      	subs	r1, r2, r3
+ 80008fa:	4b7b      	ldr	r3, [pc, #492]	; (8000ae8 <display_value+0x54c>)
+ 80008fc:	fb83 2301 	smull	r2, r3, r3, r1
+ 8000900:	109a      	asrs	r2, r3, #2
+ 8000902:	17cb      	asrs	r3, r1, #31
+ 8000904:	1ad2      	subs	r2, r2, r3
+ 8000906:	4613      	mov	r3, r2
+ 8000908:	009b      	lsls	r3, r3, #2
+ 800090a:	4413      	add	r3, r2
+ 800090c:	005b      	lsls	r3, r3, #1
+ 800090e:	1aca      	subs	r2, r1, r3
+ 8000910:	2a00      	cmp	r2, #0
+ 8000912:	d020      	beq.n	8000956 <display_value+0x3ba>
+				{
+					GPIOC->BSRR |= GPIO_BSRR_BR_10;
+ 8000914:	4b71      	ldr	r3, [pc, #452]	; (8000adc <display_value+0x540>)
+ 8000916:	699b      	ldr	r3, [r3, #24]
+ 8000918:	4a70      	ldr	r2, [pc, #448]	; (8000adc <display_value+0x540>)
+ 800091a:	f043 6380 	orr.w	r3, r3, #67108864	; 0x4000000
+ 800091e:	6193      	str	r3, [r2, #24]
+					display_numeric((abs(value)/100)%10);
+ 8000920:	687b      	ldr	r3, [r7, #4]
+ 8000922:	2b00      	cmp	r3, #0
+ 8000924:	bfb8      	it	lt
+ 8000926:	425b      	neglt	r3, r3
+ 8000928:	4a6e      	ldr	r2, [pc, #440]	; (8000ae4 <display_value+0x548>)
+ 800092a:	fb82 1203 	smull	r1, r2, r2, r3
+ 800092e:	1152      	asrs	r2, r2, #5
+ 8000930:	17db      	asrs	r3, r3, #31
+ 8000932:	1ad2      	subs	r2, r2, r3
+ 8000934:	4b6c      	ldr	r3, [pc, #432]	; (8000ae8 <display_value+0x54c>)
+ 8000936:	fb83 1302 	smull	r1, r3, r3, r2
+ 800093a:	1099      	asrs	r1, r3, #2
+ 800093c:	17d3      	asrs	r3, r2, #31
+ 800093e:	1ac9      	subs	r1, r1, r3
+ 8000940:	460b      	mov	r3, r1
+ 8000942:	009b      	lsls	r3, r3, #2
+ 8000944:	440b      	add	r3, r1
+ 8000946:	005b      	lsls	r3, r3, #1
+ 8000948:	1ad1      	subs	r1, r2, r3
+ 800094a:	4608      	mov	r0, r1
+ 800094c:	f7ff fcd0 	bl	80002f0 <display_numeric>
+					clear_display();
+ 8000950:	f7ff fcae 	bl	80002b0 <clear_display>
+ 8000954:	e024      	b.n	80009a0 <display_value+0x404>
+				}
+				else
+				{
+					if((abs(value)/10)%10 != 0)
+ 8000956:	687b      	ldr	r3, [r7, #4]
+ 8000958:	2b00      	cmp	r3, #0
+ 800095a:	bfb8      	it	lt
+ 800095c:	425b      	neglt	r3, r3
+ 800095e:	4a62      	ldr	r2, [pc, #392]	; (8000ae8 <display_value+0x54c>)
+ 8000960:	fb82 1203 	smull	r1, r2, r2, r3
+ 8000964:	1092      	asrs	r2, r2, #2
+ 8000966:	17db      	asrs	r3, r3, #31
+ 8000968:	1ad1      	subs	r1, r2, r3
+ 800096a:	4b5f      	ldr	r3, [pc, #380]	; (8000ae8 <display_value+0x54c>)
+ 800096c:	fb83 2301 	smull	r2, r3, r3, r1
+ 8000970:	109a      	asrs	r2, r3, #2
+ 8000972:	17cb      	asrs	r3, r1, #31
+ 8000974:	1ad2      	subs	r2, r2, r3
+ 8000976:	4613      	mov	r3, r2
+ 8000978:	009b      	lsls	r3, r3, #2
+ 800097a:	4413      	add	r3, r2
+ 800097c:	005b      	lsls	r3, r3, #1
+ 800097e:	1aca      	subs	r2, r1, r3
+ 8000980:	2a00      	cmp	r2, #0
+ 8000982:	d00d      	beq.n	80009a0 <display_value+0x404>
+					{
+						GPIOC->BSRR |= GPIO_BSRR_BR_10;
+ 8000984:	4b55      	ldr	r3, [pc, #340]	; (8000adc <display_value+0x540>)
+ 8000986:	699b      	ldr	r3, [r3, #24]
+ 8000988:	4a54      	ldr	r2, [pc, #336]	; (8000adc <display_value+0x540>)
+ 800098a:	f043 6380 	orr.w	r3, r3, #67108864	; 0x4000000
+ 800098e:	6193      	str	r3, [r2, #24]
+						GPIOD->BSRR |= GPIO_BSRR_BR_5;
+ 8000990:	4b53      	ldr	r3, [pc, #332]	; (8000ae0 <display_value+0x544>)
+ 8000992:	699b      	ldr	r3, [r3, #24]
+ 8000994:	4a52      	ldr	r2, [pc, #328]	; (8000ae0 <display_value+0x544>)
+ 8000996:	f443 1300 	orr.w	r3, r3, #2097152	; 0x200000
+ 800099a:	6193      	str	r3, [r2, #24]
+						clear_display();
+ 800099c:	f7ff fc88 	bl	80002b0 <clear_display>
+					}
+				}
+				if((abs(value)/100)%10 != 0)
+ 80009a0:	687b      	ldr	r3, [r7, #4]
+ 80009a2:	2b00      	cmp	r3, #0
+ 80009a4:	bfb8      	it	lt
+ 80009a6:	425b      	neglt	r3, r3
+ 80009a8:	4a4e      	ldr	r2, [pc, #312]	; (8000ae4 <display_value+0x548>)
+ 80009aa:	fb82 1203 	smull	r1, r2, r2, r3
+ 80009ae:	1152      	asrs	r2, r2, #5
+ 80009b0:	17db      	asrs	r3, r3, #31
+ 80009b2:	1ad1      	subs	r1, r2, r3
+ 80009b4:	4b4c      	ldr	r3, [pc, #304]	; (8000ae8 <display_value+0x54c>)
+ 80009b6:	fb83 2301 	smull	r2, r3, r3, r1
+ 80009ba:	109a      	asrs	r2, r3, #2
+ 80009bc:	17cb      	asrs	r3, r1, #31
+ 80009be:	1ad2      	subs	r2, r2, r3
+ 80009c0:	4613      	mov	r3, r2
+ 80009c2:	009b      	lsls	r3, r3, #2
+ 80009c4:	4413      	add	r3, r2
+ 80009c6:	005b      	lsls	r3, r3, #1
+ 80009c8:	1aca      	subs	r2, r1, r3
+ 80009ca:	2a00      	cmp	r2, #0
+ 80009cc:	f43f adf7 	beq.w	80005be <display_value+0x22>
+				{
+					GPIOC->BSRR |= GPIO_BSRR_BR_11;
+ 80009d0:	4b42      	ldr	r3, [pc, #264]	; (8000adc <display_value+0x540>)
+ 80009d2:	699b      	ldr	r3, [r3, #24]
+ 80009d4:	4a41      	ldr	r2, [pc, #260]	; (8000adc <display_value+0x540>)
+ 80009d6:	f043 6300 	orr.w	r3, r3, #134217728	; 0x8000000
+ 80009da:	6193      	str	r3, [r2, #24]
+					GPIOD->BSRR |= GPIO_BSRR_BR_5;
+ 80009dc:	4b40      	ldr	r3, [pc, #256]	; (8000ae0 <display_value+0x544>)
+ 80009de:	699b      	ldr	r3, [r3, #24]
+ 80009e0:	4a3f      	ldr	r2, [pc, #252]	; (8000ae0 <display_value+0x544>)
+ 80009e2:	f443 1300 	orr.w	r3, r3, #2097152	; 0x200000
+ 80009e6:	6193      	str	r3, [r2, #24]
+					clear_display();
+ 80009e8:	f7ff fc62 	bl	80002b0 <clear_display>
+			if(value > 0)
+ 80009ec:	e5e7      	b.n	80005be <display_value+0x22>
+				}
+			}
+		}
+	}
+	else
+		for(int i = 0; i <= 200000; i++)
+ 80009ee:	2300      	movs	r3, #0
+ 80009f0:	60fb      	str	r3, [r7, #12]
+ 80009f2:	e06a      	b.n	8000aca <display_value+0x52e>
+		{
+			GPIOC->BSRR |= GPIO_BSRR_BR_11;
+ 80009f4:	4b39      	ldr	r3, [pc, #228]	; (8000adc <display_value+0x540>)
+ 80009f6:	699b      	ldr	r3, [r3, #24]
+ 80009f8:	4a38      	ldr	r2, [pc, #224]	; (8000adc <display_value+0x540>)
+ 80009fa:	f043 6300 	orr.w	r3, r3, #134217728	; 0x8000000
+ 80009fe:	6193      	str	r3, [r2, #24]
+			GPIOC->BSRR |= GPIO_BSRR_BR_12;
+ 8000a00:	4b36      	ldr	r3, [pc, #216]	; (8000adc <display_value+0x540>)
+ 8000a02:	699b      	ldr	r3, [r3, #24]
+ 8000a04:	4a35      	ldr	r2, [pc, #212]	; (8000adc <display_value+0x540>)
+ 8000a06:	f043 5380 	orr.w	r3, r3, #268435456	; 0x10000000
+ 8000a0a:	6193      	str	r3, [r2, #24]
+			GPIOD->BSRR |= GPIO_BSRR_BR_5;
+ 8000a0c:	4b34      	ldr	r3, [pc, #208]	; (8000ae0 <display_value+0x544>)
+ 8000a0e:	699b      	ldr	r3, [r3, #24]
+ 8000a10:	4a33      	ldr	r2, [pc, #204]	; (8000ae0 <display_value+0x544>)
+ 8000a12:	f443 1300 	orr.w	r3, r3, #2097152	; 0x200000
+ 8000a16:	6193      	str	r3, [r2, #24]
+			GPIOD->BSRR |= GPIO_BSRR_BR_6;
+ 8000a18:	4b31      	ldr	r3, [pc, #196]	; (8000ae0 <display_value+0x544>)
+ 8000a1a:	699b      	ldr	r3, [r3, #24]
+ 8000a1c:	4a30      	ldr	r2, [pc, #192]	; (8000ae0 <display_value+0x544>)
+ 8000a1e:	f443 0380 	orr.w	r3, r3, #4194304	; 0x400000
+ 8000a22:	6193      	str	r3, [r2, #24]
+			GPIOD->BSRR |= GPIO_BSRR_BR_7;
+ 8000a24:	4b2e      	ldr	r3, [pc, #184]	; (8000ae0 <display_value+0x544>)
+ 8000a26:	699b      	ldr	r3, [r3, #24]
+ 8000a28:	4a2d      	ldr	r2, [pc, #180]	; (8000ae0 <display_value+0x544>)
+ 8000a2a:	f443 0300 	orr.w	r3, r3, #8388608	; 0x800000
+ 8000a2e:	6193      	str	r3, [r2, #24]
+			GPIOG->BSRR |= GPIO_BSRR_BR_3;
+ 8000a30:	4b2f      	ldr	r3, [pc, #188]	; (8000af0 <display_value+0x554>)
+ 8000a32:	699b      	ldr	r3, [r3, #24]
+ 8000a34:	4a2e      	ldr	r2, [pc, #184]	; (8000af0 <display_value+0x554>)
+ 8000a36:	f443 2300 	orr.w	r3, r3, #524288	; 0x80000
+ 8000a3a:	6193      	str	r3, [r2, #24]
+			clear_display();
+ 8000a3c:	f7ff fc38 	bl	80002b0 <clear_display>
+			GPIOC->BSRR |= GPIO_BSRR_BR_10;
+ 8000a40:	4b26      	ldr	r3, [pc, #152]	; (8000adc <display_value+0x540>)
+ 8000a42:	699b      	ldr	r3, [r3, #24]
+ 8000a44:	4a25      	ldr	r2, [pc, #148]	; (8000adc <display_value+0x540>)
+ 8000a46:	f043 6380 	orr.w	r3, r3, #67108864	; 0x4000000
+ 8000a4a:	6193      	str	r3, [r2, #24]
+			GPIOD->BSRR |= GPIO_BSRR_BR_5;
+ 8000a4c:	4b24      	ldr	r3, [pc, #144]	; (8000ae0 <display_value+0x544>)
+ 8000a4e:	699b      	ldr	r3, [r3, #24]
+ 8000a50:	4a23      	ldr	r2, [pc, #140]	; (8000ae0 <display_value+0x544>)
+ 8000a52:	f443 1300 	orr.w	r3, r3, #2097152	; 0x200000
+ 8000a56:	6193      	str	r3, [r2, #24]
+			GPIOD->BSRR |= GPIO_BSRR_BR_7;
+ 8000a58:	4b21      	ldr	r3, [pc, #132]	; (8000ae0 <display_value+0x544>)
+ 8000a5a:	699b      	ldr	r3, [r3, #24]
+ 8000a5c:	4a20      	ldr	r2, [pc, #128]	; (8000ae0 <display_value+0x544>)
+ 8000a5e:	f443 0300 	orr.w	r3, r3, #8388608	; 0x800000
+ 8000a62:	6193      	str	r3, [r2, #24]
+			clear_display();
+ 8000a64:	f7ff fc24 	bl	80002b0 <clear_display>
+			GPIOC->BSRR |= GPIO_BSRR_BR_9;
+ 8000a68:	4b1c      	ldr	r3, [pc, #112]	; (8000adc <display_value+0x540>)
+ 8000a6a:	699b      	ldr	r3, [r3, #24]
+ 8000a6c:	4a1b      	ldr	r2, [pc, #108]	; (8000adc <display_value+0x540>)
+ 8000a6e:	f043 7300 	orr.w	r3, r3, #33554432	; 0x2000000
+ 8000a72:	6193      	str	r3, [r2, #24]
+			GPIOD->BSRR |= GPIO_BSRR_BR_5;
+ 8000a74:	4b1a      	ldr	r3, [pc, #104]	; (8000ae0 <display_value+0x544>)
+ 8000a76:	699b      	ldr	r3, [r3, #24]
+ 8000a78:	4a19      	ldr	r2, [pc, #100]	; (8000ae0 <display_value+0x544>)
+ 8000a7a:	f443 1300 	orr.w	r3, r3, #2097152	; 0x200000
+ 8000a7e:	6193      	str	r3, [r2, #24]
+			GPIOD->BSRR |= GPIO_BSRR_BR_7;
+ 8000a80:	4b17      	ldr	r3, [pc, #92]	; (8000ae0 <display_value+0x544>)
+ 8000a82:	699b      	ldr	r3, [r3, #24]
+ 8000a84:	4a16      	ldr	r2, [pc, #88]	; (8000ae0 <display_value+0x544>)
+ 8000a86:	f443 0300 	orr.w	r3, r3, #8388608	; 0x800000
+ 8000a8a:	6193      	str	r3, [r2, #24]
+			clear_display();
+ 8000a8c:	f7ff fc10 	bl	80002b0 <clear_display>
+			GPIOC->BSRR |= GPIO_BSRR_BR_8;
+ 8000a90:	4b12      	ldr	r3, [pc, #72]	; (8000adc <display_value+0x540>)
+ 8000a92:	699b      	ldr	r3, [r3, #24]
+ 8000a94:	4a11      	ldr	r2, [pc, #68]	; (8000adc <display_value+0x540>)
+ 8000a96:	f043 7380 	orr.w	r3, r3, #16777216	; 0x1000000
+ 8000a9a:	6193      	str	r3, [r2, #24]
+			GPIOC->BSRR |= GPIO_BSRR_BR_12;
+ 8000a9c:	4b0f      	ldr	r3, [pc, #60]	; (8000adc <display_value+0x540>)
+ 8000a9e:	699b      	ldr	r3, [r3, #24]
+ 8000aa0:	4a0e      	ldr	r2, [pc, #56]	; (8000adc <display_value+0x540>)
+ 8000aa2:	f043 5380 	orr.w	r3, r3, #268435456	; 0x10000000
+ 8000aa6:	6193      	str	r3, [r2, #24]
+			GPIOD->BSRR |= GPIO_BSRR_BR_2 | GPIO_BSRR_BR_5 | GPIO_BSRR_BR_7;
+ 8000aa8:	4b0d      	ldr	r3, [pc, #52]	; (8000ae0 <display_value+0x544>)
+ 8000aaa:	699b      	ldr	r3, [r3, #24]
+ 8000aac:	4a0c      	ldr	r2, [pc, #48]	; (8000ae0 <display_value+0x544>)
+ 8000aae:	f443 0324 	orr.w	r3, r3, #10747904	; 0xa40000
+ 8000ab2:	6193      	str	r3, [r2, #24]
+			GPIOG->BSRR |= GPIO_BSRR_BR_3;
+ 8000ab4:	4b0e      	ldr	r3, [pc, #56]	; (8000af0 <display_value+0x554>)
+ 8000ab6:	699b      	ldr	r3, [r3, #24]
+ 8000ab8:	4a0d      	ldr	r2, [pc, #52]	; (8000af0 <display_value+0x554>)
+ 8000aba:	f443 2300 	orr.w	r3, r3, #524288	; 0x80000
+ 8000abe:	6193      	str	r3, [r2, #24]
+			clear_display();
+ 8000ac0:	f7ff fbf6 	bl	80002b0 <clear_display>
+		for(int i = 0; i <= 200000; i++)
+ 8000ac4:	68fb      	ldr	r3, [r7, #12]
+ 8000ac6:	3301      	adds	r3, #1
+ 8000ac8:	60fb      	str	r3, [r7, #12]
+ 8000aca:	68fb      	ldr	r3, [r7, #12]
+ 8000acc:	4a09      	ldr	r2, [pc, #36]	; (8000af4 <display_value+0x558>)
+ 8000ace:	4293      	cmp	r3, r2
+ 8000ad0:	dd90      	ble.n	80009f4 <display_value+0x458>
+		}
+}
+ 8000ad2:	bf00      	nop
+ 8000ad4:	3710      	adds	r7, #16
+ 8000ad6:	46bd      	mov	sp, r7
+ 8000ad8:	bd80      	pop	{r7, pc}
+ 8000ada:	bf00      	nop
+ 8000adc:	40020800 	.word	0x40020800
+ 8000ae0:	40020c00 	.word	0x40020c00
+ 8000ae4:	51eb851f 	.word	0x51eb851f
+ 8000ae8:	66666667 	.word	0x66666667
+ 8000aec:	10624dd3 	.word	0x10624dd3
+ 8000af0:	40021800 	.word	0x40021800
+ 8000af4:	00030d40 	.word	0x00030d40
+
+08000af8 <main>:
+#include "indicator.h"
+
+int main(void)
+{
+ 8000af8:	b580      	push	{r7, lr}
+ 8000afa:	af00      	add	r7, sp, #0
+	init_all();
+ 8000afc:	f7ff fb9c 	bl	8000238 <init_all>
+	clear_display();
+ 8000b00:	f7ff fbd6 	bl	80002b0 <clear_display>
+	display_value(777);
+ 8000b04:	f240 3009 	movw	r0, #777	; 0x309
+ 8000b08:	f7ff fd48 	bl	800059c <display_value>
+ 8000b0c:	2300      	movs	r3, #0
+}
+ 8000b0e:	4618      	mov	r0, r3
+ 8000b10:	bd80      	pop	{r7, pc}
+	...
+
+08000b14 <Reset_Handler>:
+ 8000b14:	480d      	ldr	r0, [pc, #52]	; (8000b4c <LoopForever+0x2>)
+ 8000b16:	4685      	mov	sp, r0
+ 8000b18:	480d      	ldr	r0, [pc, #52]	; (8000b50 <LoopForever+0x6>)
+ 8000b1a:	490e      	ldr	r1, [pc, #56]	; (8000b54 <LoopForever+0xa>)
+ 8000b1c:	4a0e      	ldr	r2, [pc, #56]	; (8000b58 <LoopForever+0xe>)
+ 8000b1e:	2300      	movs	r3, #0
+ 8000b20:	e002      	b.n	8000b28 <LoopCopyDataInit>
+
+08000b22 <CopyDataInit>:
+ 8000b22:	58d4      	ldr	r4, [r2, r3]
+ 8000b24:	50c4      	str	r4, [r0, r3]
+ 8000b26:	3304      	adds	r3, #4
+
+08000b28 <LoopCopyDataInit>:
+ 8000b28:	18c4      	adds	r4, r0, r3
+ 8000b2a:	428c      	cmp	r4, r1
+ 8000b2c:	d3f9      	bcc.n	8000b22 <CopyDataInit>
+ 8000b2e:	4a0b      	ldr	r2, [pc, #44]	; (8000b5c <LoopForever+0x12>)
+ 8000b30:	4c0b      	ldr	r4, [pc, #44]	; (8000b60 <LoopForever+0x16>)
+ 8000b32:	2300      	movs	r3, #0
+ 8000b34:	e001      	b.n	8000b3a <LoopFillZerobss>
+
+08000b36 <FillZerobss>:
+ 8000b36:	6013      	str	r3, [r2, #0]
+ 8000b38:	3204      	adds	r2, #4
+
+08000b3a <LoopFillZerobss>:
+ 8000b3a:	42a2      	cmp	r2, r4
+ 8000b3c:	d3fb      	bcc.n	8000b36 <FillZerobss>
+ 8000b3e:	f3af 8000 	nop.w
+ 8000b42:	f000 f811 	bl	8000b68 <__libc_init_array>
+ 8000b46:	f7ff ffd7 	bl	8000af8 <main>
+
+08000b4a <LoopForever>:
+ 8000b4a:	e7fe      	b.n	8000b4a <LoopForever>
+ 8000b4c:	20080000 	.word	0x20080000
+ 8000b50:	20000000 	.word	0x20000000
+ 8000b54:	20000000 	.word	0x20000000
+ 8000b58:	08000bd0 	.word	0x08000bd0
+ 8000b5c:	20000000 	.word	0x20000000
+ 8000b60:	2000001c 	.word	0x2000001c
+
+08000b64 <ADC_IRQHandler>:
+ 8000b64:	e7fe      	b.n	8000b64 <ADC_IRQHandler>
+	...
+
+08000b68 <__libc_init_array>:
+ 8000b68:	b570      	push	{r4, r5, r6, lr}
+ 8000b6a:	4e0d      	ldr	r6, [pc, #52]	; (8000ba0 <__libc_init_array+0x38>)
+ 8000b6c:	4c0d      	ldr	r4, [pc, #52]	; (8000ba4 <__libc_init_array+0x3c>)
+ 8000b6e:	1ba4      	subs	r4, r4, r6
+ 8000b70:	10a4      	asrs	r4, r4, #2
+ 8000b72:	2500      	movs	r5, #0
+ 8000b74:	42a5      	cmp	r5, r4
+ 8000b76:	d109      	bne.n	8000b8c <__libc_init_array+0x24>
+ 8000b78:	4e0b      	ldr	r6, [pc, #44]	; (8000ba8 <__libc_init_array+0x40>)
+ 8000b7a:	4c0c      	ldr	r4, [pc, #48]	; (8000bac <__libc_init_array+0x44>)
+ 8000b7c:	f000 f818 	bl	8000bb0 <_init>
+ 8000b80:	1ba4      	subs	r4, r4, r6
+ 8000b82:	10a4      	asrs	r4, r4, #2
+ 8000b84:	2500      	movs	r5, #0
+ 8000b86:	42a5      	cmp	r5, r4
+ 8000b88:	d105      	bne.n	8000b96 <__libc_init_array+0x2e>
+ 8000b8a:	bd70      	pop	{r4, r5, r6, pc}
+ 8000b8c:	f856 3025 	ldr.w	r3, [r6, r5, lsl #2]
+ 8000b90:	4798      	blx	r3
+ 8000b92:	3501      	adds	r5, #1
+ 8000b94:	e7ee      	b.n	8000b74 <__libc_init_array+0xc>
+ 8000b96:	f856 3025 	ldr.w	r3, [r6, r5, lsl #2]
+ 8000b9a:	4798      	blx	r3
+ 8000b9c:	3501      	adds	r5, #1
+ 8000b9e:	e7f2      	b.n	8000b86 <__libc_init_array+0x1e>
+ 8000ba0:	08000bc8 	.word	0x08000bc8
+ 8000ba4:	08000bc8 	.word	0x08000bc8
+ 8000ba8:	08000bc8 	.word	0x08000bc8
+ 8000bac:	08000bcc 	.word	0x08000bcc
+
+08000bb0 <_init>:
+ 8000bb0:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8000bb2:	bf00      	nop
+ 8000bb4:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8000bb6:	bc08      	pop	{r3}
+ 8000bb8:	469e      	mov	lr, r3
+ 8000bba:	4770      	bx	lr
+
+08000bbc <_fini>:
+ 8000bbc:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8000bbe:	bf00      	nop
+ 8000bc0:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8000bc2:	bc08      	pop	{r3}
+ 8000bc4:	469e      	mov	lr, r3
+ 8000bc6:	4770      	bx	lr
