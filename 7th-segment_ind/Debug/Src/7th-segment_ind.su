@@ -1,6 +1,0 @@
-7th-segment_ind.c:3:5:abs	16	static
-7th-segment_ind.c:9:6:init_all	4	static
-7th-segment_ind.c:20:6:clear_display	4	static
-7th-segment_ind.c:27:6:stop_display	4	static
-7th-segment_ind.c:32:6:display_numeric	24	static
-7th-segment_ind.c:133:6:display_value	24	static
