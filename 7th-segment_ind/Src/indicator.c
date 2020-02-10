@@ -1,13 +1,20 @@
 #include "stm32f767xx.h"
 
+int value_to_show;
+
 int abs(int value)
 {
-	value = -value;
+	if(value < 0)
+	{
+		value = -value;
+		return value;
+	}
 	return value;
 }
 
 void init_all()
 {
+	RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
 	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN | RCC_AHB1ENR_GPIODEN | RCC_AHB1ENR_GPIOGEN;
 	GPIOC->MODER |= GPIO_MODER_MODER8_0 | GPIO_MODER_MODER9_0 | GPIO_MODER_MODER10_0 | GPIO_MODER_MODER11_0 | GPIO_MODER_MODER12_0;
 	GPIOC->OTYPER |= GPIO_OTYPER_OT_8 | GPIO_OTYPER_OT_9 | GPIO_OTYPER_OT_10 | GPIO_OTYPER_OT_11 | GPIO_OTYPER_OT_12;
@@ -15,6 +22,7 @@ void init_all()
 	GPIOD->OTYPER |= GPIO_OTYPER_OT_2 | GPIO_OTYPER_OT_4 | GPIO_OTYPER_OT_5 | GPIO_OTYPER_OT_6 | GPIO_OTYPER_OT_7;
 	GPIOG->MODER |= GPIO_MODER_MODER2_0 | GPIO_MODER_MODER3_0;
 	GPIOG->OTYPER |= GPIO_OTYPER_OT_2 | GPIO_OTYPER_OT_3;
+	SysTick_Config(1200000);
 }
 
 void clear_display()
@@ -228,4 +236,9 @@ void display_value(int value)
 			GPIOG->BSRR |= GPIO_BSRR_BR_3;
 			clear_display();
 		}
+}
+
+void SysTick_Handler(void)
+{
+
 }
