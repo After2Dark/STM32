@@ -133,52 +133,57 @@ void display_numeric(int numeric)
 		}
 }
 
-void display_value(int value)
+void change_value(int value,int mode)
+{
+	value_to_show = value;
+}
+
+void SysTick_Handler(void)
 {
 	clear_display();
-	if(value < 10000 && value >-1000)
+	if(value_to_show < 10000 && value_to_show >-1000)
 	{
-		while(1)
+		for(int i = 0; i <= 1000; ++i)
 		{
-			if(value > 0)
+			if(value_to_show > 0)
 			{
 				GPIOC->BSRR |= GPIO_BSRR_BR_8;
-				display_numeric(value%10);
+				display_numeric(value_to_show%10);
 				clear_display();
-				if((value/10)%10 != 0 || (value/100)%10 != 0 || (value/1000)%10 != 0)
+				if((value_to_show/10)%10 != 0 || (value_to_show/100)%10 != 0 || (value_to_show/1000)%10 != 0)
 				{
 					GPIOC->BSRR |= GPIO_BSRR_BR_9;
-					display_numeric((value/10)%10);
+					display_numeric((value_to_show/10)%10);
 					clear_display();
 				}
-				if((value/100)%10 != 0 || (value/1000)%10 != 0)
+				if((value_to_show/100)%10 != 0 || (value_to_show/1000)%10 != 0)
 				{
 					GPIOC->BSRR |= GPIO_BSRR_BR_10;
-					display_numeric((value/100)%10);
+					display_numeric((value_to_show/100)%10);
 					clear_display();
 				}
-				if((value/1000)%10 != 0)
+				if((value_to_show/1000)%10 != 0)
 				{
 					GPIOC->BSRR |= GPIO_BSRR_BR_11;
-					display_numeric((value/1000)%10);
+					display_numeric((value_to_show/1000)%10);
 					clear_display();
 				}
 			}
-			if(value == 0)
+			if(value_to_show == 0)
 			{
 				GPIOC->BSRR |= GPIO_BSRR_BR_8;
 				display_numeric(0);
 				clear_display();
 			}
-			if(value < 0)
+			if(value_to_show < 0)
 			{
 				GPIOC->BSRR |= GPIO_BSRR_BR_8;
-				display_numeric(abs(value)%10);
+				display_numeric(abs(value_to_show)%10);
 				clear_display();
-				if((abs(value)/10)%10 != 0 || (abs(value)/100)%10 != 0)
+				if((abs(value_to_show)/10)%10 != 0 || (abs(value_to_show)/100)%10 != 0)
 				{
 					GPIOC->BSRR |= GPIO_BSRR_BR_9;
-					display_numeric((abs(value)/10)%10);
+					display_numeric((abs(value_to_show)/10)%10);
 					clear_display();
 
 				}
@@ -188,22 +193,22 @@ void display_value(int value)
 					GPIOD->BSRR |= GPIO_BSRR_BR_5;
 					clear_display();
 				}
-				if((abs(value)/100)%10 != 0 || (abs(value)/1000)%10 != 0)
+				if((abs(value_to_show)/100)%10 != 0 || (abs(value_to_show)/1000)%10 != 0)
 				{
 					GPIOC->BSRR |= GPIO_BSRR_BR_10;
-					display_numeric((abs(value)/100)%10);
+					display_numeric((abs(value_to_show)/100)%10);
 					clear_display();
 				}
 				else
 				{
-					if((abs(value)/10)%10 != 0)
+					if((abs(value_to_show)/10)%10 != 0)
 					{
 						GPIOC->BSRR |= GPIO_BSRR_BR_10;
 						GPIOD->BSRR |= GPIO_BSRR_BR_5;
 						clear_display();
 					}
 				}
-				if((abs(value)/100)%10 != 0)
+				if((abs(value_to_show)/100)%10 != 0)
 				{
 					GPIOC->BSRR |= GPIO_BSRR_BR_11;
 					GPIOD->BSRR |= GPIO_BSRR_BR_5;
@@ -213,7 +218,7 @@ void display_value(int value)
 		}
 	}
 	else
-		for(int i = 0; i <= 200000; i++)
+		for(int i = 0; i <= 1000; i++)
 		{
 			GPIOC->BSRR |= GPIO_BSRR_BR_11;
 			GPIOC->BSRR |= GPIO_BSRR_BR_12;
@@ -236,9 +241,4 @@ void display_value(int value)
 			GPIOG->BSRR |= GPIO_BSRR_BR_3;
 			clear_display();
 		}
-}
-
-void SysTick_Handler(void)
-{
-
 }

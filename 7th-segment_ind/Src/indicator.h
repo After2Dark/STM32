@@ -7,6 +7,8 @@ void clear_display();
 
 void display_numeric(int numeric);
 
-void display_value(int value);
+void change_value(int value,int mode);
+
+void SysTick_Handler(void);
 
 #endif
