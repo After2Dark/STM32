@@ -3,3 +3,4 @@
 /7th-segment_ind/Src/*
 !/7th-segment_ind/Src/indicator.h
 !/7th-segment_ind/Src/indicator.c
+!/7th-segment_ind/Src/main.c
