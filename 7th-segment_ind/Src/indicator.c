@@ -8,6 +8,19 @@ int value_digit = 1;
 int flag = 0;
 int start_digit = 1;
 
+void init_all()
+{
+	RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
+	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN | RCC_AHB1ENR_GPIODEN | RCC_AHB1ENR_GPIOGEN;
+	GPIOC->MODER |= GPIO_MODER_MODER8_0 | GPIO_MODER_MODER9_0 | GPIO_MODER_MODER10_0 | GPIO_MODER_MODER11_0 | GPIO_MODER_MODER12_0;
+	GPIOC->OTYPER |= GPIO_OTYPER_OT_8 | GPIO_OTYPER_OT_9 | GPIO_OTYPER_OT_10 | GPIO_OTYPER_OT_11 | GPIO_OTYPER_OT_12;
+	GPIOD->MODER |= GPIO_MODER_MODER2_0 | GPIO_MODER_MODER4_0 | GPIO_MODER_MODER5_0 | GPIO_MODER_MODER6_0 | GPIO_MODER_MODER7_0;
+	GPIOD->OTYPER |= GPIO_OTYPER_OT_2 | GPIO_OTYPER_OT_4 | GPIO_OTYPER_OT_5 | GPIO_OTYPER_OT_6 | GPIO_OTYPER_OT_7;
+	GPIOG->MODER |= GPIO_MODER_MODER2_0 | GPIO_MODER_MODER3_0;
+	GPIOG->OTYPER |= GPIO_OTYPER_OT_2 | GPIO_OTYPER_OT_3;
+	SysTick_Config(160000);
+}
+
 int abs(int value)
 {
 	if(value < 0)
@@ -24,19 +37,6 @@ int degree(int value)
 	for(int i = 0; i < value; ++i)
 		rezult *= 10;
 	return rezult;
-}
-
-void init_all()
-{
-	RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
-	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN | RCC_AHB1ENR_GPIODEN | RCC_AHB1ENR_GPIOGEN;
-	GPIOC->MODER |= GPIO_MODER_MODER8_0 | GPIO_MODER_MODER9_0 | GPIO_MODER_MODER10_0 | GPIO_MODER_MODER11_0 | GPIO_MODER_MODER12_0;
-	GPIOC->OTYPER |= GPIO_OTYPER_OT_8 | GPIO_OTYPER_OT_9 | GPIO_OTYPER_OT_10 | GPIO_OTYPER_OT_11 | GPIO_OTYPER_OT_12;
-	GPIOD->MODER |= GPIO_MODER_MODER2_0 | GPIO_MODER_MODER4_0 | GPIO_MODER_MODER5_0 | GPIO_MODER_MODER6_0 | GPIO_MODER_MODER7_0;
-	GPIOD->OTYPER |= GPIO_OTYPER_OT_2 | GPIO_OTYPER_OT_4 | GPIO_OTYPER_OT_5 | GPIO_OTYPER_OT_6 | GPIO_OTYPER_OT_7;
-	GPIOG->MODER |= GPIO_MODER_MODER2_0 | GPIO_MODER_MODER3_0;
-	GPIOG->OTYPER |= GPIO_OTYPER_OT_2 | GPIO_OTYPER_OT_3;
-	SysTick_Config(160000);
 }
 
 void clear_display()
@@ -344,16 +344,16 @@ void running_string(int value)
 		for(int i = 0; i <= 100; ++i)
 		{
 			GPIOC->BSRR |= GPIO_BSRR_BR_8;
-			display_numeric(value%10);
+			display_numeric(abs(value)%10);
 			clear_display();
 			GPIOC->BSRR |= GPIO_BSRR_BR_9;
-			display_numeric((value/10)%10);
+			display_numeric((abs(value)/10)%10);
 			clear_display();
 			GPIOC->BSRR |= GPIO_BSRR_BR_10;
-			display_numeric((value/100)%10);
+			display_numeric((abs(value)/100)%10);
 			clear_display();
 			GPIOC->BSRR |= GPIO_BSRR_BR_11;
-			display_numeric((value/1000)%10);
+			display_numeric((abs(value)/1000)%10);
 			clear_display();
 		}
 		++flag;
@@ -363,13 +363,13 @@ void running_string(int value)
 		for(int i = 0; i <= 100; ++i)
 		{
 			GPIOC->BSRR |= GPIO_BSRR_BR_9;
-			display_numeric(value%10);
+			display_numeric(abs(value)%10);
 			clear_display();
 			GPIOC->BSRR |= GPIO_BSRR_BR_10;
-			display_numeric((value/10)%10);
+			display_numeric((abs(value)/10)%10);
 			clear_display();
 			GPIOC->BSRR |= GPIO_BSRR_BR_11;
-			display_numeric((value/100)%10);
+			display_numeric((abs(value)/100)%10);
 			clear_display();
 		}
 			++flag;
@@ -379,10 +379,10 @@ void running_string(int value)
 		for(int i = 0; i <= 100; ++i)
 		{
 			GPIOC->BSRR |= GPIO_BSRR_BR_10;
-			display_numeric(value%10);
+			display_numeric(abs(value)%10);
 			clear_display();
 			GPIOC->BSRR |= GPIO_BSRR_BR_11;
-			display_numeric((value/10)%10);
+			display_numeric((abs(value)/10)%10);
 			clear_display();
 		}
 		++flag;
@@ -392,7 +392,7 @@ void running_string(int value)
 		for(int i = 0; i <= 100; ++i)
 		{
 			GPIOC->BSRR |= GPIO_BSRR_BR_11;
-			display_numeric(value%10);
+			display_numeric(abs(value)%10);
 			clear_display();
 		}
 		++flag;
